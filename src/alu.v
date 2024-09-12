@@ -55,6 +55,7 @@ input [DataWidth-1:0] operand2;
 input [ParamBits-1:0] param;
 output reg[DataWidth-1:0] result;
 output reg [NumStatusBits-1:0] status;  //Statussis: Zero, Underflow,  Carry
+// 0 = Carry, 1 = Underflow, 2 = Zero
 
 //reg [DataWidth:0] result_carry;
 integer i;
