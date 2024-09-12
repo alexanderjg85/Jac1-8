@@ -14,10 +14,11 @@ output [DataWidth-1:0] reg_val;
 
 wire cnt_wr_en;
 wire [PC_WIDTH-1:0] program_counter;
-wire [PC_WIDTH-1:0] counteradress;
+//wire [PC_WIDTH-1:0] counteradress;
+wire [DataWidth-1:0] literal_adr;
 
 Program_Counter PC_I_1(.clk(clk), .res_n(sys_res_n), .pc(program_counter),
- .wr_en(cnt_wr_en), .counteradress(counteradress) );
+ .wr_en(cnt_wr_en), .counteradress(literal_adr) );
  
 
 wire[IRWidth-1:0] instruction;
@@ -33,7 +34,6 @@ wire [SEL_WIDTH-1:0] rd_sel2;
 wire [SEL_WIDTH-1:0] wr_sel;
 wire [NumOpCodeBits-1:0] opcode;
 wire [ParamBits-1:0] param;
-wire [DataWidth-1:0] literal_adr;
 wire [NumStatusBits-1:0] status;
 wire  sel_reg_in_alu_decoder;  //Selektion ob das Register durch ALU oder Decoder beschrieben wird, 1 = AlU, 0 = Decoder
 
