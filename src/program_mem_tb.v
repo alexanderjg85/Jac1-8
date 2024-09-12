@@ -36,6 +36,12 @@ initial begin
 	#10
 	program_counter = 7;
 	#10
+	program_counter = 8;
+	#10
+	program_counter = 9;
+	#10
+	program_counter = 10;
+	#10
 	
 	 $finish();
 end
