@@ -4,7 +4,7 @@ module alu_test;
 parameter DataWidth = 8;
 parameter NumOpCodeBits = 5;
 parameter ParamBits = 8;
-parameter NumStatusBits = 2;
+parameter NumStatusBits = 3;
 
 parameter Op_NOP = 5'b0_0000;
 parameter Op_ADD = 5'b0_0001;
@@ -40,35 +40,52 @@ initial begin
     opcode_t = Op_ADD;
     operand1_t = 1;
     operand2_t = 3;
-    #10 
+    #1
+    assert(result_t === 4);
+    #9 
     opcode_t = Op_ADD;
     operand1_t = 4;
     operand2_t = 6;
-    #10
+    #1
+    assert(result_t === 10);
+    #9
     opcode_t = Op_ADD;
     operand1_t = 255;
     operand2_t = 2;
-    #10
+    #1
+    assert(result_t === 1);
+    assert(status_t[0] === 1);
+    #9
     opcode_t = Op_AND;
     operand1_t = 8'b1100_1100;
     operand2_t = 8'b1010_1010;
-    #10
+    #1
+    assert(result_t === 8'b1000_1000);
+    #9
     opcode_t = Op_OR;
     operand1_t = 8'b1111_0000;
     operand2_t = 8'b0000_1111;
-    #10
+    #1
+    assert(result_t === 8'b1111_1111);
+    #9
     opcode_t = Op_OR;
     operand1_t = 8'b0101_1100;
     operand2_t = 8'b1010_1100;
-    #10
+    #1
+    assert(result_t === 8'b1111_1100);
+    #9
     opcode_t = Op_NOT;
     operand1_t = 8'b1111_0000;
     operand2_t = 8'b0000_1111;
-    #10
+    #1
+    assert(result_t === 8'b1111_0000);
+    #9
     opcode_t = Op_NOT;
     operand1_t = 8'b0101_1100;
     operand2_t = 8'b1010_1100;
-    #10
+    #1
+    assert(result_t === 8'b0101_0011);
+    #9
     $finish();
 end
 

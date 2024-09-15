@@ -7,7 +7,7 @@ module ALU_J(opcode, operand1, operand2, param, result, status);
 parameter DataWidth = 8;
 parameter NumOpCodeBits = 5;
 parameter ParamBits = 8;
-parameter NumStatusBits = 2;
+parameter NumStatusBits = 3;
 
 //logic & arithmetic commands
 parameter Op_NOP  = 5'b0_0000;
@@ -63,30 +63,31 @@ integer i;
 always@(*) begin
 
 case (opcode)
-Op_NOP: begin  result <= 8'b0000_0000; status <= 2'b00; end
+Op_NOP: begin  result <= 8'b0000_0000; status <= 3'b000; end
 Op_ADD: begin  {status[0],result[DataWidth-1:0]} <= operand1 + operand2;
 			 //result_carry = operand1 + operand2;
 			 //status[0] = result_carry[DataWidth];  result = result_carry[DataWidth-1:0];
 			 status[1] <= 0;
+			 status[2] <= 0;
 		 end
 //ToDO: Op_Sub: begin end
 Op_AND: begin for (i=0; i < DataWidth; i=i+1)
 			begin 
 				result[i] <= operand1[i] & operand2[i];
 			end
-			status <= 2'b00;
+			status <= 3'b000;
 		end
 Op_OR: begin for (i=0; i < DataWidth; i=i+1)
 			begin 
 				result[i] <= operand1[i] | operand2[i];
 			end
-			status <= 2'b00;
+			status <= 3'b000;
 		end
 Op_NOT: begin for (i=0; i < DataWidth; i=i+1)
 			begin 
 				result[i] <= ~ operand2[i];
 			end
-			status <= 2'b00;
+			status <= 3'b000;
 		end
 //ToDO: Op_XOR: begin end
 //ToDO: Op_SHL: begin end
@@ -95,7 +96,7 @@ Op_NOT: begin for (i=0; i < DataWidth; i=i+1)
 
 
  
-default: begin result <= 8'b0000_0000;  status <= 2'b00; end
+default: begin result <= 8'b0000_0000;  status <= 3'b000; end
 
 
 endcase

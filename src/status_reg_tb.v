@@ -1,6 +1,6 @@
 module status_test;
 
-parameter NumStatusBits = 2;
+parameter NumStatusBits = 3;
 
 reg clk;
 reg res_n;
@@ -27,32 +27,32 @@ initial begin
     wr_en = 0;    
     #10
     res_n = 1;
-    assert(status === 2'b00);
+    assert(status === 3'b000);
     #10			//Alu darf Status schreiben
 	wr_en = 1;
 	sel_stat_in_alu_decoder = 1;
-	alu_status = 2'b01;
-    dec_status = 2'b11;
+	alu_status = 3'b001;
+    dec_status = 3'b011;
     #6
-    assert(status === 2'b01);
+    assert(status === 3'b001);
 	#4
-	alu_status = 2'b10;	
+	alu_status = 3'b010;	
 	#6
-	assert(status === 2'b10);
+	assert(status === 3'b010);
 	#4
-	alu_status = 2'b00;
+	alu_status = 3'b000;
 	#6
-	assert(status === 2'b00);
+	assert(status === 3'b000);
 	#4   //keiner darf schreiben
 	wr_en = 0;
-	alu_status = 2'b01;
+	alu_status = 3'b001;
 	#6
-	assert(status === 2'b00);
+	assert(status === 3'b000);
 	#14 //decoder darf schreiben
 	sel_stat_in_alu_decoder = 0;
 	wr_en = 1;
 	#6
-	assert(status === 2'b11);
+	assert(status === 3'b011);
 	#4
 	
 	 $finish();

@@ -1,6 +1,6 @@
 module Status_reg (clk, res_n, status, sel_stat_in_alu_decoder, alu_status, dec_status, wr_en);
 
-parameter NumStatusBits = 2;
+parameter NumStatusBits = 3;
 
 input clk;
 input res_n;

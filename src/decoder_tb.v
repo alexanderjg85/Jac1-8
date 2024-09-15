@@ -7,7 +7,7 @@ parameter PC_WIDTH = 8;
 parameter PROGRAM_DataWidth = 16;
 parameter NumOpCodeBits = 5;
 parameter ParamBits = 8;
-parameter NumStatusBits = 2;
+parameter NumStatusBits = 3;
 
 //logic & arithmetic commands
 parameter Op_NOP  = 5'b0_0000;
@@ -86,7 +86,16 @@ initial begin
     instruction[15:11] = Op_ADD;
     instruction[OP1_BIT_POS:OP1_BIT_POS-1] = 2'b01;
     instruction[OP2_BIT_POS:OP2_BIT_POS-1] = 2'b10;
-    #10
+    #1
+    assert(opcode === Op_ADD);
+    assert(rd_sel1 === 2'b01);
+    assert(rd_sel2 === 2'b10);
+    assert(rd_en1 === 1);
+    assert(rd_en2 === 1);
+    assert(sel_reg_in_alu_decoder === 1);
+    assert(wr_en === 1);
+    assert(wr_sel === 2'b01);
+    #9
     //ToDO Test Op_SUB
     //Test Op_AND
     instruction[15:11] = Op_AND;

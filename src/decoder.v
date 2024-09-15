@@ -8,7 +8,7 @@ parameter PC_WIDTH = 8;
 parameter PROGRAM_DataWidth = 16;
 parameter NumOpCodeBits = 5;
 parameter ParamBits = 8;
-parameter NumStatusBits = 2;
+parameter NumStatusBits = 3;
 
 //logic & arithmetic commands
 parameter Op_NOP  = 5'b0_0000;
