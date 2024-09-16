@@ -21,27 +21,49 @@ initial begin
     program_counter = 0;
     #10
     res_n = 1;
-    #10
+    #6
+    assert(instruction === 16'b0100_1001_0000_0011);
+    #4
     program_counter = 1;
-    #10
+    #6
+    assert(instruction === 16'b0100_1010_0001_0100);
+    #4
     program_counter = 2;
-    #10 
+    #6
+    assert(instruction === 16'b0100_1011_1111_0000);
+    #4 
     program_counter = 3;
-	#10
+	#6
+    assert(instruction === 16'b0000_1001_0001_0000);
+    #4 
 	program_counter = 4;
-    #10 
+    #6
+    assert(instruction === 16'b0001_1001_0001_1000);
+    #4  
     program_counter = 5;
-	#10
+	#6
+    assert(instruction === 16'b0100_1000_0000_1111);
+    #4
 	program_counter = 6;
-	#10
+	#6
+    assert(instruction === 16'b0010_0000_0000_1000);
+    #4
 	program_counter = 7;
-	#10
+	#6
+    assert(instruction === 16'b0010_1001_0001_1000);
+    #4
 	program_counter = 8;
-	#10
+	#6
+    assert(instruction === 16'b0000_0000_0000_0000);
+    #4
 	program_counter = 9;
-	#10
+	#6
+    assert(instruction === 16'b0000_0000_0000_0000);
+    #4
 	program_counter = 10;
-	#10
+	#6
+    assert(instruction === 16'b1000_0000_0000_1000);
+    #4
 	
 	 $finish();
 end
