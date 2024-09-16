@@ -18,15 +18,21 @@ initial begin
     literal_adr = 8'h00;
     result = 8'h00;
     //Test Write Value from ALU    
-    #10		
+    #1
+    assert(reg_val === 8'h00 );
+    #9		
     result = 8'h44;
     
     //Test Write Value from Decoder
-    #10   
+    #1
+    assert(reg_val === 8'h44 );
+    #9   
     sel_reg_in_alu_decoder = 0;
     literal_adr = 8'hF3;
     result = 8'h00;
-    #10
+    #1
+    assert(reg_val === 8'hF3 );
+    #9
     
 
 	$finish();

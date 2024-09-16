@@ -22,12 +22,17 @@ initial begin
     res_n = 1;
     #10
     counteradress = 32;
+    assert(program_counter === 0);
     #10
+    assert(program_counter === 1);
     #10
     wr_en = 1;
+    assert(program_counter === 2);
     #10
     wr_en = 0;
+    assert(program_counter === 32);
     #10
+    assert(program_counter === 33);
     #10
 
 	$finish();
