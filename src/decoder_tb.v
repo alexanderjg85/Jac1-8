@@ -101,28 +101,75 @@ initial begin
     instruction[15:11] = Op_AND;
     instruction[OP1_BIT_POS:OP1_BIT_POS-1] = 2'b11;
     instruction[OP2_BIT_POS:OP2_BIT_POS-1] = 2'b10;
-    #10
+    #1
+    assert(opcode === Op_AND);
+    assert(rd_sel1 === 2'b11);
+    assert(rd_sel2 === 2'b10);
+    assert(rd_en1 === 1);
+    assert(rd_en2 === 1);
+    assert(sel_reg_in_alu_decoder === 1);
+    assert(wr_en === 1);
+    assert(wr_sel === 2'b11);
+    #9
     //Test Op_OR
     instruction[15:11] = Op_OR;
     instruction[OP1_BIT_POS:OP1_BIT_POS-1] = 2'b00;
     instruction[OP2_BIT_POS:OP2_BIT_POS-1] = 2'b01;
-    #10
+    #1
+    assert(opcode === Op_OR);
+    assert(rd_sel1 === 2'b00);
+    assert(rd_sel2 === 2'b01);
+    assert(rd_en1 === 1);
+    assert(rd_en2 === 1);
+    assert(sel_reg_in_alu_decoder === 1);
+    assert(wr_en === 1);
+    assert(wr_sel === 2'b00);
+    #9
     //Test Op_NOT
     instruction[15:11] = Op_NOT;
     instruction[OP1_BIT_POS:OP1_BIT_POS-1] = 2'b10;
     instruction[OP2_BIT_POS:OP2_BIT_POS-1] = 2'b00;
-    #10
+    #1
+    assert(opcode === Op_NOT);
+    assert(rd_sel1 === 2'b00);
+    assert(rd_sel2 === 2'b00);
+    assert(rd_en1 === 0);
+    assert(rd_en2 === 1);
+    assert(sel_reg_in_alu_decoder === 1);
+    assert(wr_en === 1);
+    assert(wr_sel === 2'b10);
+    #9
     //Test Op_VAL
     instruction[15:11] = Op_VAL;
     instruction[ParamBits-1:0] = 8'hA5;
     instruction[OP1_BIT_POS:OP1_BIT_POS-1] = 2'b11;
-    #10
+    #1
+    assert(opcode === Op_VAL);
+    assert(rd_sel1 === 2'b00);
+    assert(rd_sel2 === 2'b00);
+    assert(rd_en1 === 0);
+    assert(rd_en2 === 0);
+    assert(sel_reg_in_alu_decoder === 0);
+    assert(wr_en === 1);
+    assert(wr_sel === 2'b11);
+    assert(param === 8'hA5);
+    #9
     //Test Op_GOTO
     instruction[15:11] = Op_GOTO;
     instruction[ParamBits-1:0] = 8'h3F;
     instruction[OP1_BIT_POS:OP1_BIT_POS-1] = 2'b00;
-    #10
-  //  #10
+    #1
+    assert(opcode === Op_GOTO);
+    assert(rd_sel1 === 2'b00);
+    assert(rd_sel2 === 2'b00);
+    assert(rd_en1 === 0);
+    assert(rd_en2 === 0);
+    assert(sel_reg_in_alu_decoder === 0);
+    assert(wr_en === 0);
+    assert(wr_sel === 2'b00);
+    assert(cnt_wr_en === 1 );
+    assert(literal_adr === 8'h3F);
+    #9
   //  #10
   //  #10
 
