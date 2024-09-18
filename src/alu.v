@@ -68,26 +68,43 @@ Op_ADD: begin  {status[0],result[DataWidth-1:0]} <= operand1 + operand2;
 			 //result_carry = operand1 + operand2;
 			 //status[0] = result_carry[DataWidth];  result = result_carry[DataWidth-1:0];
 			 status[1] <= 0;
-			 status[2] <= 0;
+			 //auf Zero  prüfen
+			 if(operand1 + operand2 === 0) begin
+				status[2] <= 1;
+			 end else begin
+				status[2] <= 0;
+			 end
 		 end
 //ToDO: Op_Sub: begin end
 Op_AND: begin for (i=0; i < DataWidth; i=i+1)
 			begin 
 				result[i] <= operand1[i] & operand2[i];
 			end
-			status <= 3'b000;
+			if(result !== 0) begin
+				status <= 3'b000;
+			end else begin  //bei 0 Zero-Bit setzen, andere Statusbits können nicht auftreten
+				status <= 3'b100;
+			end
 		end
 Op_OR: begin for (i=0; i < DataWidth; i=i+1)
 			begin 
 				result[i] <= operand1[i] | operand2[i];
 			end
-			status <= 3'b000;
+			if(result !== 0) begin
+				status <= 3'b000;
+			end else begin  //bei 0 Zero-Bit setzen, andere Statusbits können nicht auftreten
+				status <= 3'b100;
+			end
 		end
 Op_NOT: begin for (i=0; i < DataWidth; i=i+1)
 			begin 
 				result[i] <= ~ operand2[i];
 			end
-			status <= 3'b000;
+			if(result !== 0) begin
+				status <= 3'b000;
+			end else begin  //bei 0 Zero-Bit setzen, andere Statusbits können nicht auftreten
+				status <= 3'b100;
+			end
 		end
 //ToDO: Op_XOR: begin end
 //ToDO: Op_SHL: begin end
