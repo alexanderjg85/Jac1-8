@@ -75,7 +75,20 @@ Op_ADD: begin  {status[0],result[DataWidth-1:0]} <= operand1 + operand2;
 				status[2] <= 0;
 			 end
 		 end
-//ToDO: Op_Sub: begin end
+Op_SUB: begin result = operand1 - operand2;
+			status[0] = 0;
+			if(operand2 > operand1) begin //Underflow, wenn Operand 2 groeßer als Operand1
+				status[1] = 1;
+			end else begin
+				status[1] = 0;
+			end
+			//auf Zero  prüfen, wenn 2 gleiche Zahlen voneinander subtrahiert werden ist das Ergebnis 0
+			 if(operand1 === operand2) begin
+				status[2] <= 1;
+			 end else begin
+				status[2] <= 0;
+			 end
+		end
 Op_AND: begin for (i=0; i < DataWidth; i=i+1)
 			begin 
 				result[i] <= operand1[i] & operand2[i];

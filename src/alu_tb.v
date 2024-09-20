@@ -160,6 +160,30 @@ initial begin
     assert(status_t[1:0] === 0);
     assert(status_t[2] === 1);
     #9
+    opcode_t = Op_SUB;
+    operand1_t = 8'b0011_1111;
+    operand2_t = 8'b0000_1111;
+    #1  //63 - 15 = 48 und kein Status-Flag gesetzt
+    assert(result_t === 8'b0011_0000);
+    assert(status_t[1:0] === 0);
+    assert(status_t[2] === 0);
+    #9
+    opcode_t = Op_SUB;
+    operand1_t = 8'b0000_1110;
+    operand2_t = 8'b0000_1111;
+    #1  //14 - 15 = 255 und Underflow-Flag gesetzt
+    assert(result_t === 8'b1111_1111);
+    assert(status_t[1:0] === 2'b10);
+    assert(status_t[2] === 0);
+    #9
+    opcode_t = Op_SUB;
+    operand1_t = 8'b0111_1110;
+    operand2_t = 8'b0111_1110;
+    #1  //176 - 176 = 0 und Zero-Flag gesetzt
+    assert(result_t === 8'b0000_0000);
+    assert(status_t[1:0] === 2'b00);
+    assert(status_t[2] === 1);
+    #9
     $finish();
 end
 
