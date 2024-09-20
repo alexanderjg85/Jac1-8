@@ -106,10 +106,20 @@ Op_NOT: begin for (i=0; i < DataWidth; i=i+1)
 				status <= 3'b100;
 			end
 		end
-//ToDO: Op_XOR: begin end
+Op_XOR: begin
+			for (i=0; i < DataWidth; i=i+1)
+			begin
+				result[i] <= operand1[i] ^ operand2[i];
+			end
+			if(result !== 0) begin
+				status <= 3'b000;
+			end else begin  //bei 0 Zero-Bit setzen, andere Statusbits können nicht auftreten
+				status <= 3'b100;
+			end
+		end
 //ToDO: Op_SHL: begin end
 //ToDO: Op_SHR: begin end
-//ToDO: Op_VAL: No AlU Command
+//Op_VAL: No AlU Command
 
 
  
