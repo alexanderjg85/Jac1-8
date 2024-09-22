@@ -24,10 +24,13 @@ begin
 		NVM[5] <= 16'b0100_1000_0000_1111;		//val  Lade Register 0 mit Wert 15
 		NVM[6] <= 16'b0010_0000_0000_1000;		//or   Bitweises or Register 0 mit 1 und speichere den Wert in Register 0 => Reg0 = h1F
 		NVM[7] <= 16'b0010_1001_0001_1000;		//not   Bitweises not Register 3 und speichere den Wert in Register 1 => Reg1 = h0F
-		NVM[8] <= 16'b0000_0000_0000_0000;		//nop
-		NVM[9] <= 16'b0000_0000_0000_0000;		//nop
-		NVM[10] <= 16'b1000_0000_0000_1000;		//goto Gehe zu Adresse NVM 8 
-		for (i=11; i < CMD_CNT; i=i+1)
+		//Reg0 = h1F Reg1 = h0F, Reg2 = h14 Reg3 =hF0
+		NVM[8] <= 16'b0011_0011_0000_1000;		//xor   Bitweises xor Register 3 mit 1 und speichere den Wert in Register 3 => Reg2 = hFF
+		NVM[9] <= 16'b0001_0011_0000_1000;		//sub   Subtrahiere Register 3 mit 2 und speichere den Wert in Register 3 => Reg2 = hEB Op_SUB  = 5'b0_0010;
+		NVM[10] <= 16'b0000_0000_0000_0000;		//nop
+		NVM[11] <= 16'b0000_0000_0000_0000;		//nop
+		NVM[12] <= 16'b1000_0000_0000_1000;		//goto Gehe zu Adresse NVM 8 
+		for (i=13; i < CMD_CNT; i=i+1)
 		begin
 			NVM[i] <= 0;
 		end
