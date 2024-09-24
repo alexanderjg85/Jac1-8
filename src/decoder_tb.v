@@ -96,7 +96,20 @@ initial begin
     assert(wr_en === 1);
     assert(wr_sel === 2'b01);
     #9
-    //ToDO Test Op_SUB
+    //Test Op_SUB
+    instruction[15:11] = Op_SUB;
+    instruction[OP1_BIT_POS:OP1_BIT_POS-1] = 2'b10;
+    instruction[OP2_BIT_POS:OP2_BIT_POS-1] = 2'b01;
+    #1
+    assert(opcode === Op_SUB);
+    assert(rd_sel1 === 2'b10);
+    assert(rd_sel2 === 2'b01);
+    assert(rd_en1 === 1);
+    assert(rd_en2 === 1);
+    assert(sel_reg_in_alu_decoder === 1);
+    assert(wr_en === 1);
+    assert(wr_sel === 2'b10);
+    #9
     //Test Op_AND
     instruction[15:11] = Op_AND;
     instruction[OP1_BIT_POS:OP1_BIT_POS-1] = 2'b11;
@@ -170,8 +183,20 @@ initial begin
     assert(cnt_wr_en === 1 );
     assert(literal_adr === 8'h3F);
     #9
-  //  #10
-  //  #10
+	//Test Op_XOR
+    instruction[15:11] = Op_XOR;
+    instruction[OP1_BIT_POS:OP1_BIT_POS-1] = 2'b11;
+    instruction[OP2_BIT_POS:OP2_BIT_POS-1] = 2'b10;
+    #1
+    assert(opcode === Op_XOR);
+    assert(rd_sel1 === 2'b11);
+    assert(rd_sel2 === 2'b10);
+    assert(rd_en1 === 1);
+    assert(rd_en2 === 1);
+    assert(sel_reg_in_alu_decoder === 1);
+    assert(wr_en === 1);
+    assert(wr_sel === 2'b11);
+    #9
 
 	$finish();
 end

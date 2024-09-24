@@ -88,7 +88,12 @@ begin
 					rd_en1 <= 1; rd_en2 <= 1; wr_en <= 1; cnt_wr_en <= 0;
 					sel_reg_in_alu_decoder <= SEL_ALU;
 			end
-	//Todo: Op_SUB: begin end
+	Op_SUB: begin	rd_sel1 <= instruction[OP1_BIT_POS:OP1_BIT_POS-1];
+					rd_sel2 <= instruction[OP2_BIT_POS:OP2_BIT_POS-1];
+					wr_sel <= instruction[OP1_BIT_POS:OP1_BIT_POS-1];
+					rd_en1 <= 1; rd_en2 <= 1; wr_en <= 1; cnt_wr_en <= 0;
+					sel_reg_in_alu_decoder <= SEL_ALU;
+			end
 	Op_AND: begin  	rd_sel1 <= instruction[OP1_BIT_POS:OP1_BIT_POS-1]; 
 					rd_sel2 <= instruction[OP2_BIT_POS:OP2_BIT_POS-1]; 
 					wr_sel <= instruction[OP1_BIT_POS:OP1_BIT_POS-1];
@@ -107,7 +112,12 @@ begin
 					rd_en1 <= 0; rd_en2 <= 1; wr_en <= 1; 
 					cnt_wr_en <= 0; sel_reg_in_alu_decoder <= SEL_ALU;
 			end
-	//Todo: Op_XOR: begin end 
+	Op_XOR: begin  rd_sel1 <= instruction[OP1_BIT_POS:OP1_BIT_POS-1];
+					rd_sel2 <= instruction[OP2_BIT_POS:OP2_BIT_POS-1];
+					wr_sel <= instruction[OP1_BIT_POS:OP1_BIT_POS-1];
+					rd_en1 <= 1; rd_en2 <= 1; wr_en <= 1;
+					cnt_wr_en <= 0; sel_reg_in_alu_decoder <= SEL_ALU;
+			end
 	//Todo:	Op_SHL: begin end
 	//Todo	Op_SHR: begin end
 	Op_VAL: begin  	rd_sel1 <= 2'b00; 
