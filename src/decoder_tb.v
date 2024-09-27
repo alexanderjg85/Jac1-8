@@ -68,12 +68,15 @@ wire [DataWidth-1:0] literal_adr;
 reg [NumStatusBits-1:0] status;
 wire  sel_reg_in_alu_decoder;
 wire  cnt_wr_en;
+wire stat_wr_en;
+wire stat_reg_in_alu_decoder;
+wire [NumStatusBits-1:0] status_out;
 
 	
 decoder uut(.instruction(instruction), .opcode(opcode), .param(param), .literal_adr(literal_adr), 
 	.status(status), .rd_sel1(rd_sel1), .rd_sel2(rd_sel2), .rd_en1(rd_en1), .rd_en2(rd_en2), 
 	.wr_en(wr_en), .wr_sel(wr_sel), .sel_reg_in_alu_decoder(sel_reg_in_alu_decoder),
-	.cnt_wr_en(cnt_wr_en)); 
+	.cnt_wr_en(cnt_wr_en), .stat_wr_en(stat_wr_en), .stat_reg_in_alu_decoder(stat_reg_in_alu_decoder), .status_out(status_out));
 
 initial begin
     $dumpfile("Decodertest.vcd");
@@ -81,8 +84,12 @@ initial begin
     
     instruction = 0;
     status = 0;
+    #1
+    assert(stat_wr_en === 0);
+    assert(status_out === 3'b000);
+    assert(stat_reg_in_alu_decoder === 1);
     //Test ADD    
-    #10		
+    #9
     instruction[15:11] = Op_ADD;
     instruction[OP1_BIT_POS:OP1_BIT_POS-1] = 2'b01;
     instruction[OP2_BIT_POS:OP2_BIT_POS-1] = 2'b10;
@@ -95,6 +102,9 @@ initial begin
     assert(sel_reg_in_alu_decoder === 1);
     assert(wr_en === 1);
     assert(wr_sel === 2'b01);
+    assert(status_out === 3'b000);
+    assert(stat_reg_in_alu_decoder === 1);
+    assert(stat_wr_en === 1);
     #9
     //Test Op_SUB
     instruction[15:11] = Op_SUB;
@@ -109,6 +119,9 @@ initial begin
     assert(sel_reg_in_alu_decoder === 1);
     assert(wr_en === 1);
     assert(wr_sel === 2'b10);
+    assert(status_out === 3'b000);
+    assert(stat_reg_in_alu_decoder === 1);
+    assert(stat_wr_en === 1);
     #9
     //Test Op_AND
     instruction[15:11] = Op_AND;
@@ -123,6 +136,9 @@ initial begin
     assert(sel_reg_in_alu_decoder === 1);
     assert(wr_en === 1);
     assert(wr_sel === 2'b11);
+    assert(status_out === 3'b000);
+    assert(stat_reg_in_alu_decoder === 1);
+    assert(stat_wr_en === 1);
     #9
     //Test Op_OR
     instruction[15:11] = Op_OR;
@@ -137,6 +153,9 @@ initial begin
     assert(sel_reg_in_alu_decoder === 1);
     assert(wr_en === 1);
     assert(wr_sel === 2'b00);
+    assert(status_out === 3'b000);
+    assert(stat_reg_in_alu_decoder === 1);
+    assert(stat_wr_en === 1);
     #9
     //Test Op_NOT
     instruction[15:11] = Op_NOT;
@@ -151,6 +170,9 @@ initial begin
     assert(sel_reg_in_alu_decoder === 1);
     assert(wr_en === 1);
     assert(wr_sel === 2'b10);
+    assert(status_out === 3'b000);
+    assert(stat_reg_in_alu_decoder === 1);
+    assert(stat_wr_en === 1);
     #9
     //Test Op_VAL
     instruction[15:11] = Op_VAL;
@@ -166,6 +188,9 @@ initial begin
     assert(wr_en === 1);
     assert(wr_sel === 2'b11);
     assert(param === 8'hA5);
+    assert(status_out === 3'b000);
+    assert(stat_reg_in_alu_decoder === 1);
+    assert(stat_wr_en === 0);
     #9
     //Test Op_GOTO
     instruction[15:11] = Op_GOTO;
@@ -182,6 +207,9 @@ initial begin
     assert(wr_sel === 2'b00);
     assert(cnt_wr_en === 1 );
     assert(literal_adr === 8'h3F);
+    assert(status_out === 3'b000);
+    assert(stat_reg_in_alu_decoder === 1);
+    assert(stat_wr_en === 0);
     #9
 	//Test Op_XOR
     instruction[15:11] = Op_XOR;
@@ -196,6 +224,9 @@ initial begin
     assert(sel_reg_in_alu_decoder === 1);
     assert(wr_en === 1);
     assert(wr_sel === 2'b11);
+    assert(status_out === 3'b000);
+    assert(stat_reg_in_alu_decoder === 1);
+    assert(stat_wr_en === 1);
     #9
 
 	$finish();
