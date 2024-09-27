@@ -70,8 +70,8 @@ output reg[SEL_WIDTH-1:0] wr_sel;
 output reg sel_reg_in_alu_decoder; //Selektion ob das Register durch ALU oder Decoder beschrieben wird, 1 = AlU, 0 = Decoder
 output reg cnt_wr_en;	//write enable fuer PC, wenn nicht aktiv wird fröhlich immer eins hochgezählt
 output reg stat_wr_en;	//write enable fuer Status Reg
-output reg stat_reg_in_alu_decoder;  //Selektion ob das Status Register durch ALU oder Decoder beschrieben wird, 1 = ALU, 0 Decoder
-output reg [NumStatusBits-1:0] status_out;
+output stat_reg_in_alu_decoder;  //Selektion ob das Status Register durch ALU oder Decoder beschrieben wird, 1 = ALU, 0 Decoder
+output [NumStatusBits-1:0] status_out;
 
 assign opcode = instruction[15:11];
 assign param = instruction[7:0];
