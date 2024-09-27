@@ -36,12 +36,15 @@ wire [NumOpCodeBits-1:0] opcode;
 wire [ParamBits-1:0] param;
 wire [NumStatusBits-1:0] status;
 wire  sel_reg_in_alu_decoder;  //Selektion ob das Register durch ALU oder Decoder beschrieben wird, 1 = AlU, 0 = Decoder
+wire stat_wr_en;
+wire stat_reg_in_alu_decoder;
+wire [NumStatusBits-1:0] status_out;
 
 	
 decoder decoder_I_1(.instruction(instruction), .opcode(opcode), .param(param), .literal_adr(literal_adr), 
 	.status(status), .rd_sel1(rd_sel1), .rd_sel2(rd_sel2), .rd_en1(rd_en1), .rd_en2(rd_en2), 
 	.wr_en(wr_en), .wr_sel(wr_sel), .sel_reg_in_alu_decoder(sel_reg_in_alu_decoder),
-	.cnt_wr_en(cnt_wr_en)); 
+	.cnt_wr_en(cnt_wr_en), .stat_wr_en(stat_wr_en), .stat_reg_in_alu_decoder(stat_reg_in_alu_decoder), .status_out(status_out));
 
  
 wire [DataWidth-1:0] result;
@@ -58,9 +61,12 @@ registerset register_I_1(.clk(clk), .res_n(sys_res_n), .wr_en(wr_en), .wr_sel(wr
 	.reg_out_1(reg_out_1), .reg_out_2(reg_out_2), .rd_en1(rd_en1), .rd_en2(rd_en2), 
 	.rd_sel1(rd_sel1), .rd_sel2(rd_sel2)); 
 
-
+wire [NumStatusBits-1:0] status_alu;
 
 ALU_J alu_I_1(.opcode(opcode), .operand1(reg_out_1), .operand2(reg_out_2),
- .param(param), .result(result), .status(status));
+ .param(param), .result(result), .status(status_alu));
+
+Status_reg status_I_1(.clk(clk), .res_n(sys_res_n), .status(status), .wr_en(stat_wr_en),
+ .alu_status(status_alu), .dec_status(status_out), .sel_stat_in_alu_decoder(stat_reg_in_alu_decoder));
 
 endmodule
