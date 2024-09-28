@@ -184,6 +184,33 @@ initial begin
     assert(status_t[1:0] === 2'b00);
     assert(status_t[2] === 1);
     #9
+    opcode_t = Op_SHL;
+    operand1_t = 8'b0111_0110;
+    operand2_t = 8'b0000_0000;
+    param_t = 8'b0000_0001;
+    #1  //0111_0110 << 1 = 1110_1100 und kein Status-Flag gesetzt
+    assert(result_t === 8'b1110_1100);
+    assert(status_t[1:0] === 2'b00);
+    assert(status_t[2] === 0);
+    #9
+    opcode_t = Op_SHL;
+    operand1_t = 8'b0000_0110;
+    operand2_t = 8'b0000_0000;
+    param_t = 8'b0000_0011;
+    #1  //0000_0110 << 3 = 0110_0000 und kein Status-Flag gesetzt
+    assert(result_t === 8'b0011_0000);
+    assert(status_t[1:0] === 2'b00);
+    assert(status_t[2] === 0);
+    #9
+    opcode_t = Op_SHL;
+    operand1_t = 8'b1111_0110;
+    operand2_t = 8'b0000_0000;
+    param_t = 8'b0011_0011;
+    #1  //1111_0110 << 8 = 0000_0000 und Zero-Bit gesetzt
+    assert(result_t === 8'b0000_0000);
+    assert(status_t[1:0] === 2'b00);
+    assert(status_t[2] === 1);
+    #9
     $finish();
 end
 
