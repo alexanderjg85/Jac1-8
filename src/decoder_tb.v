@@ -228,6 +228,41 @@ initial begin
     assert(stat_reg_in_alu_decoder === 1);
     assert(stat_wr_en === 1);
     #9
+    //Test Op_SHL
+    instruction[15:11] = Op_SHL;
+    instruction[OP1_BIT_POS:OP1_BIT_POS-1] = 2'b01;
+    instruction[ParamBits-1:0] = 8'h05;
+    #1
+    assert(opcode === Op_SHL);
+    assert(rd_sel1 === 2'b01);
+    assert(rd_sel2 === 2'b00);
+    assert(rd_en1 === 1);
+    assert(rd_en2 === 0);
+    assert(sel_reg_in_alu_decoder === 1);
+    assert(wr_en === 1);
+    assert(wr_sel === 2'b01);
+    assert(status_out === 3'b000);
+    assert(stat_reg_in_alu_decoder === 1);
+    assert(stat_wr_en === 1);
+    #9
+    //Test Op_SHR
+    instruction[15:11] = Op_SHR;
+    instruction[OP1_BIT_POS:OP1_BIT_POS-1] = 2'b10;
+    instruction[ParamBits-1:0] = 8'h02;
+    #1
+    assert(opcode === Op_SHR);
+    assert(rd_sel1 === 2'b10);
+    assert(rd_sel2 === 2'b00);
+    assert(rd_en1 === 1);
+    assert(rd_en2 === 0);
+    assert(sel_reg_in_alu_decoder === 1);
+    assert(wr_en === 1);
+    assert(wr_sel === 2'b10);
+    assert(status_out === 3'b000);
+    assert(stat_reg_in_alu_decoder === 1);
+    assert(stat_wr_en === 1);
+    #9
+
 
 	$finish();
 end
