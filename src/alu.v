@@ -142,7 +142,18 @@ Op_SHL: begin
 				status <= 3'b100;
 			end
 		end
-//ToDO: Op_SHR: begin end
+Op_SHR: begin
+			if (param >= DataWidth) begin
+				result <= operand1 >> DataWidth;
+			end else begin
+				result <= operand1 >> param;
+			end
+			if(result !== 0) begin
+				status <= 3'b000;
+			end else begin  //bei 0 Zero-Bit setzen, andere Statusbits können nicht auftreten
+				status <= 3'b100;
+			end
+		end
 //Op_VAL: No AlU Command
 
 
