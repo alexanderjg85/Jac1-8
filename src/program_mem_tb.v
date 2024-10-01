@@ -70,6 +70,14 @@ initial begin
     #4
     program_counter = 12;
 	#6
+    assert(instruction === 16'b0011_1001_0000_0010);
+    #4
+    program_counter = 13;
+	#6
+    assert(instruction === 16'b0100_0010_0000_0100);
+    #4
+    program_counter = 14;
+	#6
     assert(instruction === 16'b1000_0000_0000_1000);
     #4
 	
