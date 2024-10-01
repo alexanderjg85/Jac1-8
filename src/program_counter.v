@@ -1,10 +1,11 @@
-module Program_Counter(clk, res_n, wr_en, counteradress,pc);
+module Program_Counter(clk, res_n, wr_en, counteradress,pc, add_offset);
 
 parameter PC_WIDTH = 8;
 
 input clk;
 input res_n;
 input wr_en;
+input add_offset;
 input [PC_WIDTH-1:0] counteradress;
 output reg  [PC_WIDTH-1:0] pc;
 
@@ -14,13 +15,17 @@ begin
 	begin
 		pc <= 8'hFF;
 	end
-	else if (wr_en)
+	else if (wr_en && (!add_offset)) //Goto Command - Jump to address
 	begin
 		pc <= counteradress;
 	end
+	else if (wr_en && add_offset) //Program Flow Command - Add Offset to PC
+	begin
+		pc <= pc + counteradress;
+	end
 	else
 	begin
-		pc <= pc+1;
+		pc <= pc+1;		//Normal program flow
 	end
 	
 end
