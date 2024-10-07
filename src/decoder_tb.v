@@ -71,11 +71,12 @@ wire  cnt_wr_en;
 wire stat_wr_en;
 wire stat_reg_in_alu_decoder;
 wire [NumStatusBits-1:0] status_out;
+wire add_offset;
 
 	
 decoder uut(.instruction(instruction), .opcode(opcode), .param(param), .literal_adr(literal_adr), 
 	.status(status), .rd_sel1(rd_sel1), .rd_sel2(rd_sel2), .rd_en1(rd_en1), .rd_en2(rd_en2), 
-	.wr_en(wr_en), .wr_sel(wr_sel), .sel_reg_in_alu_decoder(sel_reg_in_alu_decoder),
+	.wr_en(wr_en), .wr_sel(wr_sel), .sel_reg_in_alu_decoder(sel_reg_in_alu_decoder), .add_offset(add_offset),
 	.cnt_wr_en(cnt_wr_en), .stat_wr_en(stat_wr_en), .stat_reg_in_alu_decoder(stat_reg_in_alu_decoder), .status_out(status_out));
 
 initial begin
@@ -105,6 +106,7 @@ initial begin
     assert(status_out === 3'b000);
     assert(stat_reg_in_alu_decoder === 1);
     assert(stat_wr_en === 1);
+    assert(add_offset === 0);
     #9
     //Test Op_SUB
     instruction[15:11] = Op_SUB;
@@ -122,6 +124,7 @@ initial begin
     assert(status_out === 3'b000);
     assert(stat_reg_in_alu_decoder === 1);
     assert(stat_wr_en === 1);
+    assert(add_offset === 0);
     #9
     //Test Op_AND
     instruction[15:11] = Op_AND;
@@ -139,6 +142,7 @@ initial begin
     assert(status_out === 3'b000);
     assert(stat_reg_in_alu_decoder === 1);
     assert(stat_wr_en === 1);
+    assert(add_offset === 0);
     #9
     //Test Op_OR
     instruction[15:11] = Op_OR;
@@ -156,6 +160,7 @@ initial begin
     assert(status_out === 3'b000);
     assert(stat_reg_in_alu_decoder === 1);
     assert(stat_wr_en === 1);
+    assert(add_offset === 0);
     #9
     //Test Op_NOT
     instruction[15:11] = Op_NOT;
@@ -173,6 +178,7 @@ initial begin
     assert(status_out === 3'b000);
     assert(stat_reg_in_alu_decoder === 1);
     assert(stat_wr_en === 1);
+    assert(add_offset === 0);
     #9
     //Test Op_VAL
     instruction[15:11] = Op_VAL;
@@ -191,6 +197,7 @@ initial begin
     assert(status_out === 3'b000);
     assert(stat_reg_in_alu_decoder === 1);
     assert(stat_wr_en === 0);
+    assert(add_offset === 0);
     #9
     //Test Op_GOTO
     instruction[15:11] = Op_GOTO;
@@ -210,6 +217,7 @@ initial begin
     assert(status_out === 3'b000);
     assert(stat_reg_in_alu_decoder === 1);
     assert(stat_wr_en === 0);
+    assert(add_offset === 0);
     #9
 	//Test Op_XOR
     instruction[15:11] = Op_XOR;
@@ -227,6 +235,7 @@ initial begin
     assert(status_out === 3'b000);
     assert(stat_reg_in_alu_decoder === 1);
     assert(stat_wr_en === 1);
+    assert(add_offset === 0);
     #9
     //Test Op_SHL
     instruction[15:11] = Op_SHL;
@@ -244,6 +253,7 @@ initial begin
     assert(status_out === 3'b000);
     assert(stat_reg_in_alu_decoder === 1);
     assert(stat_wr_en === 1);
+    assert(add_offset === 0);
     #9
     //Test Op_SHR
     instruction[15:11] = Op_SHR;
@@ -261,6 +271,46 @@ initial begin
     assert(status_out === 3'b000);
     assert(stat_reg_in_alu_decoder === 1);
     assert(stat_wr_en === 1);
+    assert(add_offset === 0);
+    #9
+    //Op_IFZ   Zero Flag nicht gesetzt, kein relativer Sprung
+    instruction[15:11] = Op_IFZ;
+    instruction[OP1_BIT_POS:OP1_BIT_POS-1] = 2'b00;
+    instruction[ParamBits-1:0] = 8'h08;
+    #1
+    assert(opcode === Op_IFZ);
+    assert(rd_sel1 === 2'b00);
+    assert(rd_sel2 === 2'b00);
+    assert(rd_en1 === 0);
+    assert(rd_en2 === 0);
+    assert(sel_reg_in_alu_decoder === SEL_DECODER);
+    assert(wr_en === 0);
+    assert(wr_sel === 2'b00);
+    assert(status_out === 3'b000);
+    assert(stat_reg_in_alu_decoder === 1);
+    assert(stat_wr_en === 0);
+    assert(add_offset === 0);
+    assert(cnt_wr_en === 0 );
+    #9
+    //Op_IFZ   Zero Flag gesetzt, relativer Sprung
+    instruction[15:11] = Op_IFZ;
+    instruction[OP1_BIT_POS:OP1_BIT_POS-1] = 2'b00;
+    instruction[ParamBits-1:0] = 8'h09;
+    status[2] = 1;
+    #1
+    assert(opcode === Op_IFZ);
+    assert(rd_sel1 === 2'b00);
+    assert(rd_sel2 === 2'b00);
+    assert(rd_en1 === 0);
+    assert(rd_en2 === 0);
+    assert(sel_reg_in_alu_decoder === SEL_DECODER);
+    assert(wr_en === 0);
+    assert(wr_sel === 2'b00);
+    assert(status_out === 3'b000);
+    assert(stat_reg_in_alu_decoder === 1);
+    assert(stat_wr_en === 0);
+    assert(add_offset === 1);
+    assert(cnt_wr_en === 1 );
     #9
 
 

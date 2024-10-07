@@ -1,6 +1,6 @@
 module decoder (instruction, opcode, param, literal_adr, status, rd_sel1, rd_sel2,
 				rd_en1, rd_en2, wr_en, wr_sel, sel_reg_in_alu_decoder, cnt_wr_en,
-				stat_wr_en, stat_reg_in_alu_decoder, status_out);
+				stat_wr_en, stat_reg_in_alu_decoder, status_out, add_offset);
 				
 parameter DataWidth = 8;
 parameter SEL_WIDTH = 2;	//n² Register koennen somit angesprochen werden
@@ -70,6 +70,7 @@ output reg[SEL_WIDTH-1:0] wr_sel;
 output reg sel_reg_in_alu_decoder; //Selektion ob das Register durch ALU oder Decoder beschrieben wird, 1 = AlU, 0 = Decoder
 output reg cnt_wr_en;	//write enable fuer PC, wenn nicht aktiv wird fröhlich immer eins hochgezählt
 output reg stat_wr_en;	//write enable fuer Status Reg
+output reg add_offset;  //PC load with fixed address or when active with offset relative to current PC
 output stat_reg_in_alu_decoder;  //Selektion ob das Status Register durch ALU oder Decoder beschrieben wird, 1 = ALU, 0 Decoder
 output [NumStatusBits-1:0] status_out;
 
@@ -88,6 +89,7 @@ begin
 					rd_en1 <= 0; rd_en2 <= 0; wr_en <= 0; cnt_wr_en <= 0;
 					sel_reg_in_alu_decoder <= SEL_DECODER;
 					stat_wr_en <= 0;  //Status wird durch NOP nicht veraendert
+					add_offset <= 0;
 			end
 			
 	Op_ADD: begin  	rd_sel1 <= instruction[OP1_BIT_POS:OP1_BIT_POS-1]; 
@@ -96,6 +98,7 @@ begin
 					rd_en1 <= 1; rd_en2 <= 1; wr_en <= 1; cnt_wr_en <= 0;
 					sel_reg_in_alu_decoder <= SEL_ALU;
 					stat_wr_en <= 1;
+					add_offset <= 0;
 			end
 	Op_SUB: begin	rd_sel1 <= instruction[OP1_BIT_POS:OP1_BIT_POS-1];
 					rd_sel2 <= instruction[OP2_BIT_POS:OP2_BIT_POS-1];
@@ -103,6 +106,7 @@ begin
 					rd_en1 <= 1; rd_en2 <= 1; wr_en <= 1; cnt_wr_en <= 0;
 					sel_reg_in_alu_decoder <= SEL_ALU;
 					stat_wr_en <= 1;
+					add_offset <= 0;
 			end
 	Op_AND: begin  	rd_sel1 <= instruction[OP1_BIT_POS:OP1_BIT_POS-1]; 
 					rd_sel2 <= instruction[OP2_BIT_POS:OP2_BIT_POS-1]; 
@@ -110,6 +114,7 @@ begin
 					rd_en1 <= 1; rd_en2 <= 1; wr_en <= 1; 
 					cnt_wr_en <= 0; sel_reg_in_alu_decoder <= SEL_ALU;
 					stat_wr_en <= 1;
+					add_offset <= 0;
 			end
 	Op_OR:	begin  	rd_sel1 <= instruction[OP1_BIT_POS:OP1_BIT_POS-1]; 
 					rd_sel2 <= instruction[OP2_BIT_POS:OP2_BIT_POS-1]; 
@@ -117,6 +122,7 @@ begin
 					rd_en1 <= 1; rd_en2 <= 1; wr_en <= 1; 
 					cnt_wr_en <= 0; sel_reg_in_alu_decoder <= SEL_ALU;
 					stat_wr_en <= 1;
+					add_offset <= 0;
 			end
 	Op_NOT:	begin  	rd_sel1 <= 2'b00; 
 					rd_sel2 <= instruction[OP2_BIT_POS:OP2_BIT_POS-1]; 
@@ -124,6 +130,7 @@ begin
 					rd_en1 <= 0; rd_en2 <= 1; wr_en <= 1; 
 					cnt_wr_en <= 0; sel_reg_in_alu_decoder <= SEL_ALU;
 					stat_wr_en <= 1;
+					add_offset <= 0;
 			end
 	Op_XOR: begin  rd_sel1 <= instruction[OP1_BIT_POS:OP1_BIT_POS-1];
 					rd_sel2 <= instruction[OP2_BIT_POS:OP2_BIT_POS-1];
@@ -131,6 +138,7 @@ begin
 					rd_en1 <= 1; rd_en2 <= 1; wr_en <= 1;
 					cnt_wr_en <= 0; sel_reg_in_alu_decoder <= SEL_ALU;
 					stat_wr_en <= 1;
+					add_offset <= 0;
 			end
 	Op_SHL: begin
 					rd_sel1 <= instruction[OP1_BIT_POS:OP1_BIT_POS-1];
@@ -139,6 +147,7 @@ begin
 					rd_en1 <= 1; rd_en2 <= 0; wr_en <= 1;
 					cnt_wr_en <= 0; sel_reg_in_alu_decoder <= SEL_ALU;
 					stat_wr_en <= 1;
+					add_offset <= 0;
 			end
 	Op_SHR: begin
 					rd_sel1 <= instruction[OP1_BIT_POS:OP1_BIT_POS-1];
@@ -147,6 +156,7 @@ begin
 					rd_en1 <= 1; rd_en2 <= 0; wr_en <= 1;
 					cnt_wr_en <= 0; sel_reg_in_alu_decoder <= SEL_ALU;
 					stat_wr_en <= 1;
+					add_offset <= 0;
 			end
 	Op_VAL: begin  	rd_sel1 <= 2'b00; 
 					rd_sel2 <= 2'b00; 
@@ -154,6 +164,7 @@ begin
 					rd_en1 <= 0; rd_en2 <= 0; wr_en <= 1; 
 					cnt_wr_en <= 0; sel_reg_in_alu_decoder <= SEL_DECODER;
 					stat_wr_en <= 0;  //Status Register wird durch VAL Cmd nicht verändert
+					add_offset <= 0;
 			end
 			
 	//programm flow commands
@@ -163,10 +174,28 @@ begin
 					rd_en1 <= 0; rd_en2 <= 0; wr_en <= 0; 
 					cnt_wr_en <= 1; sel_reg_in_alu_decoder <= SEL_DECODER;
 					stat_wr_en <= 0;  //Status Register wird durch GOTO nicht verändert
+					add_offset <= 0;
 			end
-	//Todo	Op_IFZ  begin end
+	Op_IFZ: begin	if(status[2] === 1) //zero Bit gesetzt, relative Adresse wird gesetzt
+					begin
+						cnt_wr_en <= 1;
+						add_offset <= 1;
+					end else begin //Zero Bit nicht gesetzt, do nothing increment pc normally by 1
+						cnt_wr_en <= 0;
+						add_offset <= 0;
+					end
+
+					rd_sel1 <= 2'b00;
+					rd_sel2 <= 2'b00;
+					wr_sel <= 2'b00;
+					rd_en1 <= 0; rd_en2 <= 0; wr_en <= 0;
+					stat_wr_en <= 0;
+					sel_reg_in_alu_decoder <= SEL_DECODER;
+			end
 	//Todo	Op_IFNZ begin end
-	//Todo	Op_IFEQ begin end
+	//ToDO Op_IFEQ: begin
+
+			//end
 	//Todo	Op_IFST begin end	
 	//Todo	Op_IFGT begin end
 	
@@ -174,6 +203,7 @@ begin
 					rd_en1 <= 0; rd_en2 <= 0; wr_en <= 0; cnt_wr_en <= 0;
 					sel_reg_in_alu_decoder <= SEL_DECODER;
 					stat_wr_en <= 0; //Im Default Zweig wird das Status Register nicht verändert
+					add_offset <= 0;
 			end
 	
 	endcase
