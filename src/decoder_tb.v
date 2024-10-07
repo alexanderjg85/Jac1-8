@@ -312,6 +312,45 @@ initial begin
     assert(add_offset === 1);
     assert(cnt_wr_en === 1 );
     #9
+    //Op_IFNZ   Zero Flag gesetzt, kein relativer Sprung
+    instruction[15:11] = Op_IFNZ;
+    instruction[OP1_BIT_POS:OP1_BIT_POS-1] = 2'b00;
+    instruction[ParamBits-1:0] = 8'h0A;
+    #1
+    assert(opcode === Op_IFNZ);
+    assert(rd_sel1 === 2'b00);
+    assert(rd_sel2 === 2'b00);
+    assert(rd_en1 === 0);
+    assert(rd_en2 === 0);
+    assert(sel_reg_in_alu_decoder === SEL_DECODER);
+    assert(wr_en === 0);
+    assert(wr_sel === 2'b00);
+    assert(status_out === 3'b000);
+    assert(stat_reg_in_alu_decoder === 1);
+    assert(stat_wr_en === 0);
+    assert(add_offset === 0);
+    assert(cnt_wr_en === 0 );
+    #9
+    //Op_IFNZ   Zero Flag nicht gesetzt, relativer Sprung
+    instruction[15:11] = Op_IFNZ;
+    instruction[OP1_BIT_POS:OP1_BIT_POS-1] = 2'b00;
+    instruction[ParamBits-1:0] = 8'h0B;
+    status[2] = 0;
+    #1
+    assert(opcode === Op_IFNZ);
+    assert(rd_sel1 === 2'b00);
+    assert(rd_sel2 === 2'b00);
+    assert(rd_en1 === 0);
+    assert(rd_en2 === 0);
+    assert(sel_reg_in_alu_decoder === SEL_DECODER);
+    assert(wr_en === 0);
+    assert(wr_sel === 2'b00);
+    assert(status_out === 3'b000);
+    assert(stat_reg_in_alu_decoder === 1);
+    assert(stat_wr_en === 0);
+    assert(add_offset === 1);
+    assert(cnt_wr_en === 1 );
+    #9
 
 
 	$finish();
