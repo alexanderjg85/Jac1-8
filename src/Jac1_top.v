@@ -16,9 +16,10 @@ wire cnt_wr_en;
 wire [PC_WIDTH-1:0] program_counter;
 //wire [PC_WIDTH-1:0] counteradress;
 wire [DataWidth-1:0] literal_adr;
+wire add_offset;
 
 Program_Counter PC_I_1(.clk(clk), .res_n(sys_res_n), .pc(program_counter),
- .wr_en(cnt_wr_en), .counteradress(literal_adr) );
+ .wr_en(cnt_wr_en), .counteradress(literal_adr), .add_offset(add_offset));
  
 
 wire[IRWidth-1:0] instruction;
@@ -43,7 +44,7 @@ wire [NumStatusBits-1:0] status_out;
 	
 decoder decoder_I_1(.instruction(instruction), .opcode(opcode), .param(param), .literal_adr(literal_adr), 
 	.status(status), .rd_sel1(rd_sel1), .rd_sel2(rd_sel2), .rd_en1(rd_en1), .rd_en2(rd_en2), 
-	.wr_en(wr_en), .wr_sel(wr_sel), .sel_reg_in_alu_decoder(sel_reg_in_alu_decoder),
+	.wr_en(wr_en), .wr_sel(wr_sel), .sel_reg_in_alu_decoder(sel_reg_in_alu_decoder), .add_offset(add_offset),
 	.cnt_wr_en(cnt_wr_en), .stat_wr_en(stat_wr_en), .stat_reg_in_alu_decoder(stat_reg_in_alu_decoder), .status_out(status_out));
 
  
