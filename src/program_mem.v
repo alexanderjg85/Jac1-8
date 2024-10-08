@@ -27,13 +27,22 @@ begin
 		//Reg0 = h1F Reg1 = h0F, Reg2 = h14 Reg3 =hF0
 		NVM[8] <= 16'b0011_0011_0000_1000;		//xor   Bitweises xor Register 3 mit 1 und speichere den Wert in Register 3 => Reg3 = hFF
 		NVM[9] <= 16'b0001_0011_0000_1000;		//sub   Subtrahiere Register 3 mit 2 und speichere den Wert in Register 3 => Reg3 = hEB
-		NVM[10] <= 16'b0000_0000_0000_0000;		//nop
+		NVM[10] <= 16'b1000_1000_0000_0010;		//ifz 	Prüfe das Status Register auf Zero und überspringe die folgenden 2 Befehle, Zero Bit = 0 => kein Sprung
 		NVM[11] <= 16'b0000_0000_0000_0000;		//nop
-		NVM[12] <= 16'b0011_1001_0000_0010;		//shl	Bitweises Linksshiften von Register 1 um 2 Stellen und speichere den Wert in Register 1 => Reg1 = h3C
-		NVM[13] <= 16'b0100_0010_0000_0100;		//shr	Bitweises Rechtsshiften von Register 2 um 4 Stellen und speichere den Wert in Register 2 => Reg2 = h01
+		NVM[12] <= 16'b0000_0000_0000_0000;		//nop
+		NVM[13] <= 16'b0011_1001_0000_0010;		//shl	Bitweises Linksshiften von Register 1 um 2 Stellen und speichere den Wert in Register 1 => Reg1 = h3C
+		NVM[14] <= 16'b0100_0010_0000_0100;		//shr	Bitweises Rechtsshiften von Register 2 um 4 Stellen und speichere den Wert in Register 2 => Reg2 = h01
+		NVM[15] <= 16'b1001_0000_0000_0011;		//ifnz 	Prüfe das Status Register auf Zero und überspringe die folgenden 3 Befehle, Zero Bit = 0 =>  Sprung
+		NVM[16] <= 16'b0000_0000_0000_0000;		//nop	wird übersprungen
+		NVM[17] <= 16'b0000_0000_0000_0000;		//nop	wird übersprungen
+		NVM[18] <= 16'b0000_0000_0000_0000;		//nop	wird übersprungen
 		//Reg0 = h1F Reg1 = h3C, Reg2 = h01 Reg3 =hEB
-		NVM[14] <= 16'b1000_0000_0000_1000;		//goto Gehe zu Adresse NVM 8
-		for (i=15; i < CMD_CNT; i=i+1)
+		NVM[19] <= 16'b0001_0010_0000_1000;		//sub   Subtrahiere Register 2 mit 2 und speichere den Wert in Register 2 => Reg2 = h00, Zero Bit = 1
+		NVM[20] <= 16'b1000_1000_0000_0001;		//ifz 	Prüfe das Status Register auf Zero und überspringe den folgenden Befehl, Zero Bit = 1 => Sprung
+		NVM[21] <= 16'b0000_0000_0000_0000;		//nop	wird übersprungen
+		//Reg0 = h1F Reg1 = h3C, Reg2 = h00 Reg3 =hEB
+		NVM[22] <= 16'b1000_0000_0000_1000;		//goto Gehe zu Adresse NVM 8
+		for (i=23; i < CMD_CNT; i=i+1)
 		begin
 			NVM[i] <= 0;
 		end
