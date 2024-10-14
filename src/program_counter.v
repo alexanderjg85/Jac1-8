@@ -21,7 +21,7 @@ begin
 	end
 	else if (wr_en && add_offset) //Program Flow Command - Add Offset to PC
 	begin
-		pc <= pc + counteradress;
+		pc <= pc + counteradress + 1; //without adding 1 pc incremts 1 step to less
 	end
 	else
 	begin

@@ -36,17 +36,17 @@ initial begin
     wr_en = 0;
     assert(program_counter === 32);
     #10
-    //Test Program flow indirect adressing  pc = pc + counteraadress = 41
+    //Test Program flow indirect adressing  pc = pc + counteraddress + 1 = 42
     assert(program_counter === 33);
     counteradress = 8;
     add_offset = 1;
     wr_en = 1;
     #10
-    assert(program_counter === 41);
+    assert(program_counter === 42);
     wr_en = 0;
     add_offset = 0;
     #10
-    assert(program_counter === 42);
+    assert(program_counter === 43);
     #10
 
 	$finish();
