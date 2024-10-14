@@ -37,7 +37,7 @@ begin
 		NVM[17] <= 16'b0000_0000_0000_0000;		//nop	wird übersprungen
 		NVM[18] <= 16'b0000_0000_0000_0000;		//nop	wird übersprungen
 		//Reg0 = h1F Reg1 = h3C, Reg2 = h01 Reg3 =hEB
-		NVM[19] <= 16'b0001_0010_0000_1000;		//sub   Subtrahiere Register 2 mit 2 und speichere den Wert in Register 2 => Reg2 = h00, Zero Bit = 1
+		NVM[19] <= 16'b0001_0010_0001_0000;		//sub   Subtrahiere Register 2 mit 2 und speichere den Wert in Register 2 => Reg2 = h00, Zero Bit = 1
 		NVM[20] <= 16'b1000_1000_0000_0001;		//ifz 	Prüfe das Status Register auf Zero und überspringe den folgenden Befehl, Zero Bit = 1 => Sprung
 		NVM[21] <= 16'b0000_0000_0000_0000;		//nop	wird übersprungen
 		//Reg0 = h1F Reg1 = h3C, Reg2 = h00 Reg3 =hEB
