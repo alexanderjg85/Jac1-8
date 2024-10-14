@@ -1,6 +1,6 @@
 module Status_reg (clk, res_n, status, sel_stat_in_alu_decoder, alu_status, dec_status, wr_en);
 
-parameter NumStatusBits = 3;
+parameter NumStatusBits = 4;
 
 input clk;
 input res_n;
@@ -14,7 +14,7 @@ always @(posedge clk or negedge res_n)
 begin
 	if(!res_n)
 	begin
-		status <= 2'b00;
+		status <= 4'b0000;
 	end
 	else begin  //status changed by alu
 		if(wr_en && sel_stat_in_alu_decoder)
