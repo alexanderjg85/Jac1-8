@@ -7,7 +7,7 @@ module ALU_J(opcode, operand1, operand2, param, result, status);
 parameter DataWidth = 8;
 parameter NumOpCodeBits = 5;
 parameter ParamBits = 8;
-parameter NumStatusBits = 3;
+parameter NumStatusBits = 4;
 
 //logic & arithmetic commands
 parameter Op_NOP  = 5'b0_0000;
@@ -54,8 +54,8 @@ input [DataWidth-1:0] operand1;
 input [DataWidth-1:0] operand2;
 input [ParamBits-1:0] param;
 output reg[DataWidth-1:0] result;
-output reg [NumStatusBits-1:0] status;  //Statussis: Zero, Underflow,  Carry
-// 0 = Carry, 1 = Underflow, 2 = Zero
+output reg [NumStatusBits-1:0] status;  //Statussis: Zero, Underflow,  Carry, Equal
+// 0 = Carry, 1 = Underflow, 2 = Zero, 3 = Equal
 
 //reg [DataWidth:0] result_carry;
 integer i;
@@ -63,7 +63,7 @@ integer i;
 always@(*) begin
 
 case (opcode)
-Op_NOP: begin  result <= 8'b0000_0000; status <= 3'b000; end
+Op_NOP: begin  result <= 8'b0000_0000; status <= 4'b0000; end
 Op_ADD: begin  {status[0],result[DataWidth-1:0]} <= operand1 + operand2;
 			 //result_carry = operand1 + operand2;
 			 //status[0] = result_carry[DataWidth];  result = result_carry[DataWidth-1:0];
@@ -73,6 +73,12 @@ Op_ADD: begin  {status[0],result[DataWidth-1:0]} <= operand1 + operand2;
 				status[2] <= 1;
 			 end else begin
 				status[2] <= 0;
+			 end
+			 //auf Equal  prüfen
+			 if(operand1 === operand2) begin
+				status[3] <= 1;
+			 end else begin
+				status[3] <= 0;
 			 end
 		 end
 Op_SUB: begin result = operand1 - operand2;
@@ -88,35 +94,53 @@ Op_SUB: begin result = operand1 - operand2;
 			 end else begin
 				status[2] <= 0;
 			 end
+			 //auf Equal  prüfen
+			 if(operand1 === operand2) begin
+				status[3] <= 1;
+			 end else begin
+				status[3] <= 0;
+			 end
 		end
 Op_AND: begin for (i=0; i < DataWidth; i=i+1)
 			begin 
 				result[i] <= operand1[i] & operand2[i];
 			end
 			if(result !== 0) begin
-				status <= 3'b000;
+				status[2:0] <= 3'b000;
 			end else begin  //bei 0 Zero-Bit setzen, andere Statusbits können nicht auftreten
-				status <= 3'b100;
+				status[2:0] <= 3'b100;
 			end
+			//auf Equal  prüfen
+			 if(operand1 === operand2) begin
+				status[3] <= 1;
+			 end else begin
+				status[3] <= 0;
+			 end
 		end
 Op_OR: begin for (i=0; i < DataWidth; i=i+1)
 			begin 
 				result[i] <= operand1[i] | operand2[i];
 			end
 			if(result !== 0) begin
-				status <= 3'b000;
+				status[2:0] <= 3'b000;
 			end else begin  //bei 0 Zero-Bit setzen, andere Statusbits können nicht auftreten
-				status <= 3'b100;
+				status[2:0] <= 3'b100;
 			end
+			//auf Equal  prüfen
+			 if(operand1 === operand2) begin
+				status[3] <= 1;
+			 end else begin
+				status[3] <= 0;
+			 end
 		end
 Op_NOT: begin for (i=0; i < DataWidth; i=i+1)
 			begin 
 				result[i] <= ~ operand2[i];
 			end
 			if(result !== 0) begin
-				status <= 3'b000;
+				status <= 4'b0000;
 			end else begin  //bei 0 Zero-Bit setzen, andere Statusbits können nicht auftreten
-				status <= 3'b100;
+				status <= 4'b0100;
 			end
 		end
 Op_XOR: begin
@@ -125,10 +149,16 @@ Op_XOR: begin
 				result[i] <= operand1[i] ^ operand2[i];
 			end
 			if(result !== 0) begin
-				status <= 3'b000;
+				status[2:0] <= 3'b000;
 			end else begin  //bei 0 Zero-Bit setzen, andere Statusbits können nicht auftreten
-				status <= 3'b100;
+				status[2:0] <= 3'b100;
 			end
+			//auf Equal  prüfen
+			 if(operand1 === operand2) begin
+				status[3] <= 1;
+			 end else begin
+				status[3] <= 0;
+			 end
 		end
 Op_SHL: begin
 			if (param >= DataWidth) begin
@@ -137,9 +167,9 @@ Op_SHL: begin
 				result <= operand1 << param;
 			end
 			if(result !== 0) begin
-				status <= 3'b000;
+				status <= 4'b0000;
 			end else begin  //bei 0 Zero-Bit setzen, andere Statusbits können nicht auftreten
-				status <= 3'b100;
+				status <= 4'b0100;
 			end
 		end
 Op_SHR: begin
@@ -149,15 +179,15 @@ Op_SHR: begin
 				result <= operand1 >> param;
 			end
 			if(result !== 0) begin
-				status <= 3'b000;
+				status <= 4'b0000;
 			end else begin  //bei 0 Zero-Bit setzen, andere Statusbits können nicht auftreten
-				status <= 3'b100;
+				status <= 4'b0100;
 			end
 		end
 //Op_VAL: No AlU Command
 
 
-default: begin result <= 8'b0000_0000;  status <= 3'b000; end
+default: begin result <= 8'b0000_0000;  status <= 4'b0000; end
 
 
 endcase

@@ -4,7 +4,7 @@ module alu_test;
 parameter DataWidth = 8;
 parameter NumOpCodeBits = 5;
 parameter ParamBits = 8;
-parameter NumStatusBits = 3;
+parameter NumStatusBits = 4;
 
 parameter Op_NOP = 5'b0_0000;
 parameter Op_ADD = 5'b0_0001;
@@ -73,6 +73,7 @@ initial begin
     assert(result_t === 8'b0000_0000);
     assert(status_t[1:0] === 0);
     assert(status_t[2] === 1);
+    assert(status_t[3] === 0);
     #9
     opcode_t = Op_ADD;
     operand1_t = 8'b1111_1111;
@@ -82,15 +83,17 @@ initial begin
     assert(status_t[0] === 1);
     assert(status_t[1] === 0);
     assert(status_t[2] === 0);
+    assert(status_t[3] === 0);
     #9
     opcode_t = Op_ADD;
     operand1_t = 8'b0000_0000;
     operand2_t = 8'b0000_0000;
-    #1 //Add 0 + 0 = 0 und somit Zero Bit gesetzt
+    #1 //Add 0 + 0 = 0 und somit Zero Bit und Equal Bit gesetzt
     assert(result_t === 8'b0000_0000);
     assert(status_t[0] === 0);
     assert(status_t[1] === 0);
     assert(status_t[2] === 1)
+    assert(status_t[3] === 1);
     #9
     opcode_t = Op_OR;
     operand1_t = 8'b1111_0000;
@@ -109,10 +112,11 @@ initial begin
     opcode_t = Op_OR;
     operand1_t = 8'b0000_0000;
     operand2_t = 8'b0000_0000;
-    #1 //0 Or 0 = 0 und Zero Flag
+    #1 //0 Or 0 = 0 und Zero Flag + EqualBit
     assert(result_t === 8'b0000_0000);
     assert(status_t[1:0] === 0);
     assert(status_t[2] === 1);
+    assert(status_t[3] === 1);
     #9
     opcode_t = Op_NOT;
     operand1_t = 8'b1111_0000;
@@ -135,6 +139,7 @@ initial begin
     assert(result_t === 8'b0000_0000);
     assert(status_t[1:0] === 0);
     assert(status_t[2] === 1);
+    assert(status_t[3] === 0);
     #9
     opcode_t = Op_XOR;
     operand1_t = 8'b0000_1111;
@@ -143,6 +148,7 @@ initial begin
     assert(result_t === 8'b1111_0000);
     assert(status_t[1:0] === 0);
     assert(status_t[2] === 0);
+    assert(status_t[3] === 0);
     #9
     opcode_t = Op_XOR;
     operand1_t = 8'b1010_1111;
@@ -151,14 +157,16 @@ initial begin
     assert(result_t === 8'b1111_1010);
     assert(status_t[1:0] === 0);
     assert(status_t[2] === 0);
+    assert(status_t[3] === 0);
     #9
     opcode_t = Op_XOR;
     operand1_t = 8'b1111_0000;
     operand2_t = 8'b1111_0000;
-    #1  //140 XOR 240 = 0 und Zero-Flag gesetzt
+    #1  //140 XOR 240 = 0 und Zero-Flag + Equal Bit gesetzt
     assert(result_t === 8'b0000_0000);
     assert(status_t[1:0] === 0);
     assert(status_t[2] === 1);
+    assert(status_t[3] === 1);
     #9
     opcode_t = Op_SUB;
     operand1_t = 8'b0011_1111;
@@ -167,6 +175,7 @@ initial begin
     assert(result_t === 8'b0011_0000);
     assert(status_t[1:0] === 0);
     assert(status_t[2] === 0);
+    assert(status_t[3] === 0);
     #9
     opcode_t = Op_SUB;
     operand1_t = 8'b0000_1110;
@@ -175,14 +184,16 @@ initial begin
     assert(result_t === 8'b1111_1111);
     assert(status_t[1:0] === 2'b10);
     assert(status_t[2] === 0);
+    assert(status_t[3] === 0);
     #9
     opcode_t = Op_SUB;
     operand1_t = 8'b0111_1110;
     operand2_t = 8'b0111_1110;
-    #1  //176 - 176 = 0 und Zero-Flag gesetzt
+    #1  //176 - 176 = 0 und Zero-Flag + Equal Bit gesetzt
     assert(result_t === 8'b0000_0000);
     assert(status_t[1:0] === 2'b00);
     assert(status_t[2] === 1);
+    assert(status_t[3] === 1);
     #9
     opcode_t = Op_SHL;
     operand1_t = 8'b0111_0110;
@@ -192,6 +203,7 @@ initial begin
     assert(result_t === 8'b1110_1100);
     assert(status_t[1:0] === 2'b00);
     assert(status_t[2] === 0);
+    assert(status_t[3] === 0);
     #9
     opcode_t = Op_SHL;
     operand1_t = 8'b0000_0110;
@@ -201,6 +213,7 @@ initial begin
     assert(result_t === 8'b0011_0000);
     assert(status_t[1:0] === 2'b00);
     assert(status_t[2] === 0);
+    assert(status_t[3] === 0);
     #9
     opcode_t = Op_SHL;
     operand1_t = 8'b1111_0110;
@@ -210,6 +223,7 @@ initial begin
     assert(result_t === 8'b0000_0000);
     assert(status_t[1:0] === 2'b00);
     assert(status_t[2] === 1);
+    assert(status_t[3] === 0);
     #9
     opcode_t = Op_SHR;
     operand1_t = 8'b0111_0110;
@@ -219,6 +233,7 @@ initial begin
     assert(result_t === 8'b0011_1011);
     assert(status_t[1:0] === 2'b00);
     assert(status_t[2] === 0);
+    assert(status_t[3] === 0);
     #9
     opcode_t = Op_SHR;
     operand1_t = 8'b0110_0110;
@@ -228,6 +243,7 @@ initial begin
     assert(result_t === 8'b0000_0110);
     assert(status_t[1:0] === 2'b00);
     assert(status_t[2] === 0);
+    assert(status_t[3] === 0);
     #9    
     opcode_t = Op_SHR;
     operand1_t = 8'b1111_0110;
@@ -237,6 +253,7 @@ initial begin
     assert(result_t === 8'b0000_0000);
     assert(status_t[1:0] === 2'b00);
     assert(status_t[2] === 1);
+    assert(status_t[3] === 0);
     #9
     
     $finish();
