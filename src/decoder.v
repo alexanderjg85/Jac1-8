@@ -9,7 +9,7 @@ parameter PC_WIDTH = 8;
 parameter PROGRAM_DataWidth = 16;
 parameter NumOpCodeBits = 5;
 parameter ParamBits = 8;
-parameter NumStatusBits = 4;
+parameter NumStatusBits = 6;
 
 //logic & arithmetic commands
 parameter Op_NOP  = 5'b0_0000;
@@ -79,7 +79,7 @@ assign param = instruction[7:0];
 assign literal_adr = instruction[7:0];
 
 assign stat_reg_in_alu_decoder = 1; //Status Register wird aktuell immer durch die ALU beschrieben
-assign status_out = 4'b0000;
+assign status_out = 6'b000000;
 
 always @(instruction)
 begin

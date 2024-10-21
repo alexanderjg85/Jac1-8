@@ -7,7 +7,7 @@ parameter PC_WIDTH = 8;
 parameter PROGRAM_DataWidth = 16;
 parameter NumOpCodeBits = 5;
 parameter ParamBits = 8;
-parameter NumStatusBits = 4;
+parameter NumStatusBits = 6;
 
 //logic & arithmetic commands
 parameter Op_NOP  = 5'b0_0000;
@@ -87,7 +87,7 @@ initial begin
     status = 0;
     #1
     assert(stat_wr_en === 0);
-    assert(status_out === 4'b0000);
+    assert(status_out === 6'b000000);
     assert(stat_reg_in_alu_decoder === 1);
     //Test ADD    
     #9
@@ -103,7 +103,7 @@ initial begin
     assert(sel_reg_in_alu_decoder === 1);
     assert(wr_en === 1);
     assert(wr_sel === 2'b01);
-    assert(status_out === 4'b0000);
+    assert(status_out === 6'b000000);
     assert(stat_reg_in_alu_decoder === 1);
     assert(stat_wr_en === 1);
     assert(add_offset === 0);
@@ -121,7 +121,7 @@ initial begin
     assert(sel_reg_in_alu_decoder === 1);
     assert(wr_en === 1);
     assert(wr_sel === 2'b10);
-    assert(status_out === 4'b0000);
+    assert(status_out === 6'b000000);
     assert(stat_reg_in_alu_decoder === 1);
     assert(stat_wr_en === 1);
     assert(add_offset === 0);
@@ -139,7 +139,7 @@ initial begin
     assert(sel_reg_in_alu_decoder === 1);
     assert(wr_en === 1);
     assert(wr_sel === 2'b11);
-    assert(status_out === 4'b0000);
+    assert(status_out === 6'b000000);
     assert(stat_reg_in_alu_decoder === 1);
     assert(stat_wr_en === 1);
     assert(add_offset === 0);
@@ -157,7 +157,7 @@ initial begin
     assert(sel_reg_in_alu_decoder === 1);
     assert(wr_en === 1);
     assert(wr_sel === 2'b00);
-    assert(status_out === 4'b0000);
+    assert(status_out === 6'b000000);
     assert(stat_reg_in_alu_decoder === 1);
     assert(stat_wr_en === 1);
     assert(add_offset === 0);
@@ -175,7 +175,7 @@ initial begin
     assert(sel_reg_in_alu_decoder === 1);
     assert(wr_en === 1);
     assert(wr_sel === 2'b10);
-    assert(status_out === 4'b0000);
+    assert(status_out === 6'b00_0000);
     assert(stat_reg_in_alu_decoder === 1);
     assert(stat_wr_en === 1);
     assert(add_offset === 0);
@@ -194,7 +194,7 @@ initial begin
     assert(wr_en === 1);
     assert(wr_sel === 2'b11);
     assert(param === 8'hA5);
-    assert(status_out === 4'b0000);
+    assert(status_out === 6'b00_0000);
     assert(stat_reg_in_alu_decoder === 1);
     assert(stat_wr_en === 0);
     assert(add_offset === 0);
@@ -214,7 +214,7 @@ initial begin
     assert(wr_sel === 2'b00);
     assert(cnt_wr_en === 1 );
     assert(literal_adr === 8'h3F);
-    assert(status_out === 4'b0000);
+    assert(status_out === 6'b00_0000);
     assert(stat_reg_in_alu_decoder === 1);
     assert(stat_wr_en === 0);
     assert(add_offset === 0);
@@ -232,7 +232,7 @@ initial begin
     assert(sel_reg_in_alu_decoder === 1);
     assert(wr_en === 1);
     assert(wr_sel === 2'b11);
-    assert(status_out === 4'b0000);
+    assert(status_out === 6'b00_0000);
     assert(stat_reg_in_alu_decoder === 1);
     assert(stat_wr_en === 1);
     assert(add_offset === 0);
@@ -250,7 +250,7 @@ initial begin
     assert(sel_reg_in_alu_decoder === 1);
     assert(wr_en === 1);
     assert(wr_sel === 2'b01);
-    assert(status_out === 4'b0000);
+    assert(status_out === 6'b00_0000);
     assert(stat_reg_in_alu_decoder === 1);
     assert(stat_wr_en === 1);
     assert(add_offset === 0);
@@ -268,7 +268,7 @@ initial begin
     assert(sel_reg_in_alu_decoder === 1);
     assert(wr_en === 1);
     assert(wr_sel === 2'b10);
-    assert(status_out === 4'b0000);
+    assert(status_out === 6'b00_0000);
     assert(stat_reg_in_alu_decoder === 1);
     assert(stat_wr_en === 1);
     assert(add_offset === 0);
@@ -286,7 +286,7 @@ initial begin
     assert(sel_reg_in_alu_decoder === SEL_DECODER);
     assert(wr_en === 0);
     assert(wr_sel === 2'b00);
-    assert(status_out === 4'b0000);
+    assert(status_out === 6'b00_0000);
     assert(stat_reg_in_alu_decoder === 1);
     assert(stat_wr_en === 0);
     assert(add_offset === 0);
@@ -306,7 +306,7 @@ initial begin
     assert(sel_reg_in_alu_decoder === SEL_DECODER);
     assert(wr_en === 0);
     assert(wr_sel === 2'b00);
-    assert(status_out === 4'b0000);
+    assert(status_out === 6'b00_0000);
     assert(stat_reg_in_alu_decoder === 1);
     assert(stat_wr_en === 0);
     assert(add_offset === 1);
@@ -325,7 +325,7 @@ initial begin
     assert(sel_reg_in_alu_decoder === SEL_DECODER);
     assert(wr_en === 0);
     assert(wr_sel === 2'b00);
-    assert(status_out === 4'b0000);
+    assert(status_out === 6'b00_0000);
     assert(stat_reg_in_alu_decoder === 1);
     assert(stat_wr_en === 0);
     assert(add_offset === 0);
@@ -345,7 +345,7 @@ initial begin
     assert(sel_reg_in_alu_decoder === SEL_DECODER);
     assert(wr_en === 0);
     assert(wr_sel === 2'b00);
-    assert(status_out === 4'b0000);
+    assert(status_out === 6'b00_0000);
     assert(stat_reg_in_alu_decoder === 1);
     assert(stat_wr_en === 0);
     assert(add_offset === 1);
