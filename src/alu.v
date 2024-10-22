@@ -7,7 +7,7 @@ module ALU_J(opcode, operand1, operand2, param, result, status);
 parameter DataWidth = 8;
 parameter NumOpCodeBits = 5;
 parameter ParamBits = 8;
-parameter NumStatusBits = 4;
+parameter NumStatusBits = 6;
 
 //logic & arithmetic commands
 parameter Op_NOP  = 5'b0_0000;
@@ -54,8 +54,8 @@ input [DataWidth-1:0] operand1;
 input [DataWidth-1:0] operand2;
 input [ParamBits-1:0] param;
 output reg[DataWidth-1:0] result;
-output reg [NumStatusBits-1:0] status;  //Statussis: Zero, Underflow,  Carry, Equal
-// 0 = Carry, 1 = Underflow, 2 = Zero, 3 = Equal
+output reg [NumStatusBits-1:0] status;  //Statussis: Zero, Underflow,  Carry, Equal, Greather Than, Smaller Than
+// 0 = Carry, 1 = Underflow, 2 = Zero, 3 = Equal, 4 = GT, 5 = ST
 
 //reg [DataWidth:0] result_carry;
 integer i;
@@ -63,7 +63,7 @@ integer i;
 always@(*) begin
 
 case (opcode)
-Op_NOP: begin  result <= 8'b0000_0000; status <= 4'b0000; end
+Op_NOP: begin  result <= 8'b0000_0000; status <= 6'b00_0000; end
 Op_ADD: begin  {status[0],result[DataWidth-1:0]} <= operand1 + operand2;
 			 //result_carry = operand1 + operand2;
 			 //status[0] = result_carry[DataWidth];  result = result_carry[DataWidth-1:0];
@@ -74,11 +74,20 @@ Op_ADD: begin  {status[0],result[DataWidth-1:0]} <= operand1 + operand2;
 			 end else begin
 				status[2] <= 0;
 			 end
+
 			 //auf Equal  prüfen
 			 if(operand1 === operand2) begin
 				status[3] <= 1;
+				status[5:4] <= 2'b00;
 			 end else begin
 				status[3] <= 0;
+				if(operand1 > operand2) begin //auf greater prüfen
+					status[4] <= 1;
+					status[5] <= 0;
+				end else begin	// kleiner
+					status[4] <= 0;
+					status[5] <= 1;
+				end
 			 end
 		 end
 Op_SUB: begin result = operand1 - operand2;
@@ -94,11 +103,20 @@ Op_SUB: begin result = operand1 - operand2;
 			 end else begin
 				status[2] <= 0;
 			 end
+
 			 //auf Equal  prüfen
 			 if(operand1 === operand2) begin
 				status[3] <= 1;
+				status[5:4] <= 2'b00;  //gleich, daher nicht greater und nicht smaller
 			 end else begin
 				status[3] <= 0;
+				if(operand1 > operand2) begin //auf greater prüfen
+					status[4] <= 1;
+					status[5] <= 0;
+				end else begin	// kleiner
+					status[4] <= 0;
+					status[5] <= 1;
+				end
 			 end
 		end
 Op_AND: begin for (i=0; i < DataWidth; i=i+1)
@@ -110,11 +128,20 @@ Op_AND: begin for (i=0; i < DataWidth; i=i+1)
 			end else begin  //bei 0 Zero-Bit setzen, andere Statusbits können nicht auftreten
 				status[2:0] <= 3'b100;
 			end
+
 			//auf Equal  prüfen
 			 if(operand1 === operand2) begin
 				status[3] <= 1;
+				status[5:4] <= 2'b00;	//gleich, daher nicht greater und nicht smaller
 			 end else begin
 				status[3] <= 0;
+				if(operand1 > operand2) begin //auf greater prüfen
+					status[4] <= 1;
+					status[5] <= 0;
+				end else begin	// kleiner
+					status[4] <= 0;
+					status[5] <= 1;
+				end
 			 end
 		end
 Op_OR: begin for (i=0; i < DataWidth; i=i+1)
@@ -126,11 +153,20 @@ Op_OR: begin for (i=0; i < DataWidth; i=i+1)
 			end else begin  //bei 0 Zero-Bit setzen, andere Statusbits können nicht auftreten
 				status[2:0] <= 3'b100;
 			end
+
 			//auf Equal  prüfen
 			 if(operand1 === operand2) begin
 				status[3] <= 1;
+				status[5:4] <= 2'b00;	//gleich, daher nicht greater und nicht smaller
 			 end else begin
 				status[3] <= 0;
+				if(operand1 > operand2) begin //auf greater prüfen
+					status[4] <= 1;
+					status[5] <= 0;
+				end else begin	// kleiner
+					status[4] <= 0;
+					status[5] <= 1;
+				end
 			 end
 		end
 Op_NOT: begin for (i=0; i < DataWidth; i=i+1)
@@ -138,9 +174,9 @@ Op_NOT: begin for (i=0; i < DataWidth; i=i+1)
 				result[i] <= ~ operand2[i];
 			end
 			if(result !== 0) begin
-				status <= 4'b0000;
+				status <= 6'b00_0000;
 			end else begin  //bei 0 Zero-Bit setzen, andere Statusbits können nicht auftreten
-				status <= 4'b0100;
+				status <= 6'b00_0100;
 			end
 		end
 Op_XOR: begin
@@ -153,11 +189,20 @@ Op_XOR: begin
 			end else begin  //bei 0 Zero-Bit setzen, andere Statusbits können nicht auftreten
 				status[2:0] <= 3'b100;
 			end
+
 			//auf Equal  prüfen
 			 if(operand1 === operand2) begin
 				status[3] <= 1;
+				status[5:4] <= 2'b00;	//gleich, daher nicht greater und nicht smaller
 			 end else begin
 				status[3] <= 0;
+				if(operand1 > operand2) begin //auf greater prüfen
+					status[4] <= 1;
+					status[5] <= 0;
+				end else begin	// kleiner
+					status[4] <= 0;
+					status[5] <= 1;
+				end
 			 end
 		end
 Op_SHL: begin
@@ -167,9 +212,9 @@ Op_SHL: begin
 				result <= operand1 << param;
 			end
 			if(result !== 0) begin
-				status <= 4'b0000;
+				status <= 6'b00_0000;
 			end else begin  //bei 0 Zero-Bit setzen, andere Statusbits können nicht auftreten
-				status <= 4'b0100;
+				status <= 6'b00_0100;
 			end
 		end
 Op_SHR: begin
@@ -179,15 +224,15 @@ Op_SHR: begin
 				result <= operand1 >> param;
 			end
 			if(result !== 0) begin
-				status <= 4'b0000;
+				status <= 6'b00_0000;
 			end else begin  //bei 0 Zero-Bit setzen, andere Statusbits können nicht auftreten
-				status <= 4'b0100;
+				status <= 6'b00_0100;
 			end
 		end
 //Op_VAL: No AlU Command
 
 
-default: begin result <= 8'b0000_0000;  status <= 4'b0000; end
+default: begin result <= 8'b0000_0000;  status <= 6'b00_0000; end
 
 
 endcase

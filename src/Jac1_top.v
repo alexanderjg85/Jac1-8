@@ -4,7 +4,7 @@ parameter DataWidth = 8;
 parameter SEL_WIDTH = 2;	//n² Register koennen somit angesprochen werden
 parameter NumOpCodeBits = 5;
 parameter ParamBits = 8;
-parameter NumStatusBits = 4;
+parameter NumStatusBits = 6;
 parameter PC_WIDTH = 8;
 parameter IRWidth = 16;
 

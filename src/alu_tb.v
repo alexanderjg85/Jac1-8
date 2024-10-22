@@ -4,7 +4,7 @@ module alu_test;
 parameter DataWidth = 8;
 parameter NumOpCodeBits = 5;
 parameter ParamBits = 8;
-parameter NumStatusBits = 4;
+parameter NumStatusBits = 6;
 
 parameter Op_NOP = 5'b0_0000;
 parameter Op_ADD = 5'b0_0001;
@@ -43,14 +43,18 @@ initial begin
     operand2_t = 3;
     #1
     assert(result_t === 4);
-    assert(status_t === 0);
+    assert(status_t[3:0] === 0);
+    assert(status_t[4] === 0);
+    assert(status_t[5] === 1); //smaller than
     #9 
     opcode_t = Op_ADD;
     operand1_t = 4;
     operand2_t = 6;
     #1
     assert(result_t === 10);
-    assert(status_t === 0);
+    assert(status_t[3:0] === 0);
+    assert(status_t[4] === 0);
+    assert(status_t[5] === 1); //smaller than
     #9
     opcode_t = Op_ADD;
     operand1_t = 255;
@@ -58,13 +62,18 @@ initial begin
     #1
     assert(result_t === 1);
     assert(status_t[0] === 1);
+    assert(status_t[3:1] === 0);
+    assert(status_t[4] === 1);	//greater than
+    assert(status_t[5] === 0);
     #9
     opcode_t = Op_AND;
     operand1_t = 8'b1100_1100;
     operand2_t = 8'b1010_1010;
     #1
     assert(result_t === 8'b1000_1000);
-    assert(status_t === 0);
+    assert(status_t[3:0] === 0);
+    assert(status_t[4] === 1);	//greater than
+    assert(status_t[5] === 0);
     #9
     opcode_t = Op_AND;
     operand1_t = 8'b1100_1100;
@@ -74,6 +83,8 @@ initial begin
     assert(status_t[1:0] === 0);
     assert(status_t[2] === 1);
     assert(status_t[3] === 0);
+    assert(status_t[4] === 1);	//greater than
+    assert(status_t[5] === 0);
     #9
     opcode_t = Op_ADD;
     operand1_t = 8'b1111_1111;
@@ -84,6 +95,8 @@ initial begin
     assert(status_t[1] === 0);
     assert(status_t[2] === 0);
     assert(status_t[3] === 0);
+    assert(status_t[4] === 1);	//greater than
+    assert(status_t[5] === 0);
     #9
     opcode_t = Op_ADD;
     operand1_t = 8'b0000_0000;
@@ -93,21 +106,27 @@ initial begin
     assert(status_t[0] === 0);
     assert(status_t[1] === 0);
     assert(status_t[2] === 1)
-    assert(status_t[3] === 1);
+    assert(status_t[3] === 1); //equal
+    assert(status_t[4] === 0);
+    assert(status_t[5] === 0);
     #9
     opcode_t = Op_OR;
     operand1_t = 8'b1111_0000;
     operand2_t = 8'b0000_1111;
     #1
     assert(result_t === 8'b1111_1111);
-    assert(status_t === 0);
+    assert(status_t[3:0] === 0);
+    assert(status_t[4] === 1);	//greater than
+    assert(status_t[5] === 0);
     #9
     opcode_t = Op_OR;
     operand1_t = 8'b0101_1100;
     operand2_t = 8'b1010_1100;
     #1
     assert(result_t === 8'b1111_1100);
-    assert(status_t === 0);
+    assert(status_t[3:0] === 0);
+    assert(status_t[4] === 0);
+    assert(status_t[5] === 1);	//smaller than
     #9
     opcode_t = Op_OR;
     operand1_t = 8'b0000_0000;
@@ -116,7 +135,9 @@ initial begin
     assert(result_t === 8'b0000_0000);
     assert(status_t[1:0] === 0);
     assert(status_t[2] === 1);
-    assert(status_t[3] === 1);
+    assert(status_t[3] === 1);	//equal
+    assert(status_t[4] === 0);
+    assert(status_t[5] === 0);
     #9
     opcode_t = Op_NOT;
     operand1_t = 8'b1111_0000;
@@ -140,6 +161,8 @@ initial begin
     assert(status_t[1:0] === 0);
     assert(status_t[2] === 1);
     assert(status_t[3] === 0);
+    assert(status_t[4] === 0);
+    assert(status_t[5] === 0);
     #9
     opcode_t = Op_XOR;
     operand1_t = 8'b0000_1111;
@@ -149,6 +172,8 @@ initial begin
     assert(status_t[1:0] === 0);
     assert(status_t[2] === 0);
     assert(status_t[3] === 0);
+    assert(status_t[4] === 0);
+    assert(status_t[5] === 1);	//smaller than
     #9
     opcode_t = Op_XOR;
     operand1_t = 8'b1010_1111;
@@ -158,6 +183,8 @@ initial begin
     assert(status_t[1:0] === 0);
     assert(status_t[2] === 0);
     assert(status_t[3] === 0);
+    assert(status_t[4] === 1);	//greater than
+    assert(status_t[5] === 0);
     #9
     opcode_t = Op_XOR;
     operand1_t = 8'b1111_0000;
@@ -166,7 +193,9 @@ initial begin
     assert(result_t === 8'b0000_0000);
     assert(status_t[1:0] === 0);
     assert(status_t[2] === 1);
-    assert(status_t[3] === 1);
+    assert(status_t[3] === 1);	//equal
+    assert(status_t[4] === 0);
+    assert(status_t[5] === 0);
     #9
     opcode_t = Op_SUB;
     operand1_t = 8'b0011_1111;
@@ -176,6 +205,8 @@ initial begin
     assert(status_t[1:0] === 0);
     assert(status_t[2] === 0);
     assert(status_t[3] === 0);
+    assert(status_t[4] === 1);	//greater than
+    assert(status_t[5] === 0);
     #9
     opcode_t = Op_SUB;
     operand1_t = 8'b0000_1110;
@@ -185,6 +216,8 @@ initial begin
     assert(status_t[1:0] === 2'b10);
     assert(status_t[2] === 0);
     assert(status_t[3] === 0);
+    assert(status_t[4] === 0);
+    assert(status_t[5] === 1);	//smaller than
     #9
     opcode_t = Op_SUB;
     operand1_t = 8'b0111_1110;
@@ -193,7 +226,9 @@ initial begin
     assert(result_t === 8'b0000_0000);
     assert(status_t[1:0] === 2'b00);
     assert(status_t[2] === 1);
-    assert(status_t[3] === 1);
+    assert(status_t[3] === 1);	//equal
+    assert(status_t[4] === 0);
+    assert(status_t[5] === 0);
     #9
     opcode_t = Op_SHL;
     operand1_t = 8'b0111_0110;
@@ -204,6 +239,8 @@ initial begin
     assert(status_t[1:0] === 2'b00);
     assert(status_t[2] === 0);
     assert(status_t[3] === 0);
+    assert(status_t[4] === 0);
+    assert(status_t[5] === 0);
     #9
     opcode_t = Op_SHL;
     operand1_t = 8'b0000_0110;
@@ -214,6 +251,8 @@ initial begin
     assert(status_t[1:0] === 2'b00);
     assert(status_t[2] === 0);
     assert(status_t[3] === 0);
+    assert(status_t[4] === 0);
+    assert(status_t[5] === 0);
     #9
     opcode_t = Op_SHL;
     operand1_t = 8'b1111_0110;
@@ -224,6 +263,8 @@ initial begin
     assert(status_t[1:0] === 2'b00);
     assert(status_t[2] === 1);
     assert(status_t[3] === 0);
+    assert(status_t[4] === 0);
+    assert(status_t[5] === 0);
     #9
     opcode_t = Op_SHR;
     operand1_t = 8'b0111_0110;
@@ -234,6 +275,8 @@ initial begin
     assert(status_t[1:0] === 2'b00);
     assert(status_t[2] === 0);
     assert(status_t[3] === 0);
+    assert(status_t[4] === 0);
+    assert(status_t[5] === 0);
     #9
     opcode_t = Op_SHR;
     operand1_t = 8'b0110_0110;
@@ -244,6 +287,8 @@ initial begin
     assert(status_t[1:0] === 2'b00);
     assert(status_t[2] === 0);
     assert(status_t[3] === 0);
+    assert(status_t[4] === 0);
+    assert(status_t[5] === 0);
     #9    
     opcode_t = Op_SHR;
     operand1_t = 8'b1111_0110;
@@ -254,6 +299,8 @@ initial begin
     assert(status_t[1:0] === 2'b00);
     assert(status_t[2] === 1);
     assert(status_t[3] === 0);
+    assert(status_t[4] === 0);
+    assert(status_t[5] === 0);
     #9
     
     $finish();
