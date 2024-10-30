@@ -81,7 +81,7 @@ assign literal_adr = instruction[7:0];
 assign stat_reg_in_alu_decoder = 1; //Status Register wird aktuell immer durch die ALU beschrieben
 assign status_out = 6'b000000;
 
-always @(instruction)
+always @(instruction or status)
 begin
 	case (opcode)
 	//logic & arithmetic commands
@@ -224,7 +224,22 @@ begin
 					stat_wr_en <= 0;
 					sel_reg_in_alu_decoder <= SEL_DECODER;
 			end
-	//Todo	Op_IFST begin end	
+	Op_IFST: begin	if(status[5] === 1) //Smaller Than Bit gesetzt, relative Adresse wird gesetzt
+					begin
+						cnt_wr_en <= 1;
+						add_offset <= 1;
+					end else begin //Smaller Than Bit nicht gesetzt, do nothing increment pc normally by 1
+						cnt_wr_en <= 0;
+						add_offset <= 0;
+					end
+
+					rd_sel1 <= 2'b00;
+					rd_sel2 <= 2'b00;
+					wr_sel <= 2'b00;
+					rd_en1 <= 0; rd_en2 <= 0; wr_en <= 0;
+					stat_wr_en <= 0;
+					sel_reg_in_alu_decoder <= SEL_DECODER;
+			end
 	//Todo	Op_IFGT begin end
 	
 	default: begin  rd_sel1 <= 2'b00; rd_sel2 <= 2'b00; wr_sel <= 2'b00;
