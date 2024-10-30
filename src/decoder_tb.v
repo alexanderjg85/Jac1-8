@@ -9,6 +9,13 @@ parameter NumOpCodeBits = 5;
 parameter ParamBits = 8;
 parameter NumStatusBits = 6;
 
+parameter CarryBit = 0;
+parameter UnderflowBit = 1;
+parameter ZeroBit = 2;
+parameter EqualBit = 3;
+parameter GreaterThanBit = 4;
+parameter SmallerThanBit = 5;
+
 //logic & arithmetic commands
 parameter Op_NOP  = 5'b0_0000;
 parameter Op_ADD  = 5'b0_0001; 
@@ -296,7 +303,7 @@ initial begin
     instruction[15:11] = Op_IFZ;
     instruction[OP1_BIT_POS:OP1_BIT_POS-1] = 2'b00;
     instruction[ParamBits-1:0] = 8'h09;
-    status[2] = 1;
+    status[ZeroBit] = 1;
     #1
     assert(opcode === Op_IFZ);
     assert(rd_sel1 === 2'b00);
@@ -335,7 +342,7 @@ initial begin
     instruction[15:11] = Op_IFNZ;
     instruction[OP1_BIT_POS:OP1_BIT_POS-1] = 2'b00;
     instruction[ParamBits-1:0] = 8'h0B;
-    status[2] = 0;
+    status[ZeroBit] = 0;
     #1
     assert(opcode === Op_IFNZ);
     assert(rd_sel1 === 2'b00);
@@ -355,7 +362,7 @@ initial begin
     instruction[15:11] = Op_IFEQ;
     instruction[OP1_BIT_POS:OP1_BIT_POS-1] = 2'b00;
     instruction[ParamBits-1:0] = 8'h0C;
-    status[3] = 1;
+    status[EqualBit] = 1;
     #1
     assert(opcode === Op_IFEQ);
     assert(rd_sel1 === 2'b00);
@@ -375,7 +382,7 @@ initial begin
     instruction[15:11] = Op_IFEQ;
     instruction[OP1_BIT_POS:OP1_BIT_POS-1] = 2'b00;
     instruction[ParamBits-1:0] = 8'h0D;
-    status[3] = 0;
+    status[EqualBit] = 0;
     #1
     assert(opcode === Op_IFEQ);
     assert(rd_sel1 === 2'b00);
@@ -395,7 +402,7 @@ initial begin
     instruction[15:11] = Op_IFST;
     instruction[OP1_BIT_POS:OP1_BIT_POS-1] = 2'b00;
     instruction[ParamBits-1:0] = 8'h0E;
-    status[5] = 1;
+    status[SmallerThanBit] = 1;
     #1
     assert(opcode === Op_IFST);
     assert(rd_sel1 === 2'b00);
@@ -415,7 +422,7 @@ initial begin
     instruction[15:11] = Op_IFST;
     instruction[OP1_BIT_POS:OP1_BIT_POS-1] = 2'b00;
     instruction[ParamBits-1:0] = 8'h0E;
-    status[5] = 0;
+    status[SmallerThanBit] = 0;
     #1
     assert(opcode === Op_IFST);
     assert(rd_sel1 === 2'b00);

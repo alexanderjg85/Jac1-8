@@ -9,7 +9,14 @@ parameter PC_WIDTH = 8;
 parameter PROGRAM_DataWidth = 16;
 parameter NumOpCodeBits = 5;
 parameter ParamBits = 8;
-parameter NumStatusBits = 6;
+parameter NumStatusBits = 6;	//Status Bits: 0 = Carry, 1 = Underflow, 2 = Zero, 3 = Equal, 4 = GT, 5 = ST
+
+parameter CarryBit = 0;
+parameter UnderflowBit = 1;
+parameter ZeroBit = 2;
+parameter EqualBit = 3;
+parameter GreaterThanBit = 4;
+parameter SmallerThanBit = 5;
 
 //logic & arithmetic commands
 parameter Op_NOP  = 5'b0_0000;
@@ -176,7 +183,7 @@ begin
 					stat_wr_en <= 0;  //Status Register wird durch GOTO nicht verändert
 					add_offset <= 0;
 			end
-	Op_IFZ: begin	if(status[2] === 1) //zero Bit gesetzt, relative Adresse wird gesetzt
+	Op_IFZ: begin	if(status[ZeroBit] === 1) //zero Bit gesetzt, relative Adresse wird gesetzt
 					begin
 						cnt_wr_en <= 1;
 						add_offset <= 1;
@@ -189,10 +196,10 @@ begin
 					rd_sel2 <= 2'b00;
 					wr_sel <= 2'b00;
 					rd_en1 <= 0; rd_en2 <= 0; wr_en <= 0;
-					stat_wr_en <= 0;
+					stat_wr_en <= 0;	//Status Register wird durch IFZ nicht verändert
 					sel_reg_in_alu_decoder <= SEL_DECODER;
 			end
-	Op_IFNZ: begin	if(status[2] !== 1) //zero Bit nicht gesetzt, relative Adresse wird gesetzt
+	Op_IFNZ: begin	if(status[ZeroBit] !== 1) //zero Bit nicht gesetzt, relative Adresse wird gesetzt
 					begin
 						cnt_wr_en <= 1;
 						add_offset <= 1;
@@ -205,10 +212,10 @@ begin
 					rd_sel2 <= 2'b00;
 					wr_sel <= 2'b00;
 					rd_en1 <= 0; rd_en2 <= 0; wr_en <= 0;
-					stat_wr_en <= 0;
+					stat_wr_en <= 0;	//Status Register wird durch IFNZ nicht verändert
 					sel_reg_in_alu_decoder <= SEL_DECODER;
 			end
-	Op_IFEQ: begin  if(status[3] === 1) //Equal Bit gesetzt, relative Adresse wird gesetzt
+	Op_IFEQ: begin  if(status[EqualBit] === 1) //Equal Bit gesetzt, relative Adresse wird gesetzt
 					begin
 						cnt_wr_en <= 1;
 						add_offset <= 1;
@@ -221,10 +228,10 @@ begin
 					rd_sel2 <= 2'b00;
 					wr_sel <= 2'b00;
 					rd_en1 <= 0; rd_en2 <= 0; wr_en <= 0;
-					stat_wr_en <= 0;
+					stat_wr_en <= 0;	//Status Register wird durch IFEQ nicht verändert
 					sel_reg_in_alu_decoder <= SEL_DECODER;
 			end
-	Op_IFST: begin	if(status[5] === 1) //Smaller Than Bit gesetzt, relative Adresse wird gesetzt
+	Op_IFST: begin	if(status[SmallerThanBit] === 1) //Smaller Than Bit gesetzt, relative Adresse wird gesetzt
 					begin
 						cnt_wr_en <= 1;
 						add_offset <= 1;
@@ -237,7 +244,7 @@ begin
 					rd_sel2 <= 2'b00;
 					wr_sel <= 2'b00;
 					rd_en1 <= 0; rd_en2 <= 0; wr_en <= 0;
-					stat_wr_en <= 0;
+					stat_wr_en <= 0;	//Status Register wird durch IFST nicht verändert
 					sel_reg_in_alu_decoder <= SEL_DECODER;
 			end
 	//Todo	Op_IFGT begin end
