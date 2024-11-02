@@ -9,6 +9,13 @@ parameter NumOpCodeBits = 5;
 parameter ParamBits = 8;
 parameter NumStatusBits = 6;
 
+parameter CarryBit = 0;
+parameter UnderflowBit = 1;
+parameter ZeroBit = 2;
+parameter EqualBit = 3;
+parameter GreaterThanBit = 4;
+parameter SmallerThanBit = 5;
+
 //logic & arithmetic commands
 parameter Op_NOP  = 5'b0_0000;
 parameter Op_ADD  = 5'b0_0001; 
@@ -64,58 +71,58 @@ always@(*) begin
 
 case (opcode)
 Op_NOP: begin  result <= 8'b0000_0000; status <= 6'b00_0000; end
-Op_ADD: begin  {status[0],result[DataWidth-1:0]} <= operand1 + operand2;
+Op_ADD: begin  {status[CarryBit],result[DataWidth-1:0]} <= operand1 + operand2;
 			 //result_carry = operand1 + operand2;
 			 //status[0] = result_carry[DataWidth];  result = result_carry[DataWidth-1:0];
-			 status[1] <= 0;
+			 status[UnderflowBit] <= 0;
 			 //auf Zero  prüfen
 			 if(operand1 + operand2 === 0) begin
-				status[2] <= 1;
+				status[ZeroBit] <= 1;
 			 end else begin
-				status[2] <= 0;
+				status[ZeroBit] <= 0;
 			 end
 
 			 //auf Equal  prüfen
 			 if(operand1 === operand2) begin
-				status[3] <= 1;
+				status[EqualBit] <= 1;
 				status[5:4] <= 2'b00;
 			 end else begin
-				status[3] <= 0;
+				status[EqualBit] <= 0;
 				if(operand1 > operand2) begin //auf greater prüfen
-					status[4] <= 1;
-					status[5] <= 0;
+					status[GreaterThanBit] <= 1;
+					status[SmallerThanBit] <= 0;
 				end else begin	// kleiner
-					status[4] <= 0;
-					status[5] <= 1;
+					status[GreaterThanBit] <= 0;
+					status[SmallerThanBit] <= 1;
 				end
 			 end
 		 end
 Op_SUB: begin result = operand1 - operand2;
-			status[0] = 0;
+			status[CarryBit] = 0;
 			if(operand2 > operand1) begin //Underflow, wenn Operand 2 groeßer als Operand1
-				status[1] = 1;
+				status[UnderflowBit] = 1;
 			end else begin
-				status[1] = 0;
+				status[UnderflowBit] = 0;
 			end
 			//auf Zero  prüfen, wenn 2 gleiche Zahlen voneinander subtrahiert werden ist das Ergebnis 0
 			 if(operand1 === operand2) begin
-				status[2] <= 1;
+				status[ZeroBit] <= 1;
 			 end else begin
-				status[2] <= 0;
+				status[ZeroBit] <= 0;
 			 end
 
 			 //auf Equal  prüfen
 			 if(operand1 === operand2) begin
-				status[3] <= 1;
+				status[EqualBit] <= 1;
 				status[5:4] <= 2'b00;  //gleich, daher nicht greater und nicht smaller
 			 end else begin
-				status[3] <= 0;
+				status[EqualBit] <= 0;
 				if(operand1 > operand2) begin //auf greater prüfen
-					status[4] <= 1;
-					status[5] <= 0;
+					status[GreaterThanBit] <= 1;
+					status[SmallerThanBit] <= 0;
 				end else begin	// kleiner
-					status[4] <= 0;
-					status[5] <= 1;
+					status[GreaterThanBit] <= 0;
+					status[SmallerThanBit] <= 1;
 				end
 			 end
 		end
@@ -131,16 +138,16 @@ Op_AND: begin for (i=0; i < DataWidth; i=i+1)
 
 			//auf Equal  prüfen
 			 if(operand1 === operand2) begin
-				status[3] <= 1;
+				status[EqualBit] <= 1;
 				status[5:4] <= 2'b00;	//gleich, daher nicht greater und nicht smaller
 			 end else begin
-				status[3] <= 0;
+				status[EqualBit] <= 0;
 				if(operand1 > operand2) begin //auf greater prüfen
-					status[4] <= 1;
-					status[5] <= 0;
+					status[GreaterThanBit] <= 1;
+					status[SmallerThanBit] <= 0;
 				end else begin	// kleiner
-					status[4] <= 0;
-					status[5] <= 1;
+					status[GreaterThanBit] <= 0;
+					status[SmallerThanBit] <= 1;
 				end
 			 end
 		end
@@ -156,16 +163,16 @@ Op_OR: begin for (i=0; i < DataWidth; i=i+1)
 
 			//auf Equal  prüfen
 			 if(operand1 === operand2) begin
-				status[3] <= 1;
+				status[EqualBit] <= 1;
 				status[5:4] <= 2'b00;	//gleich, daher nicht greater und nicht smaller
 			 end else begin
-				status[3] <= 0;
+				status[EqualBit] <= 0;
 				if(operand1 > operand2) begin //auf greater prüfen
-					status[4] <= 1;
-					status[5] <= 0;
+					status[GreaterThanBit] <= 1;
+					status[SmallerThanBit] <= 0;
 				end else begin	// kleiner
-					status[4] <= 0;
-					status[5] <= 1;
+					status[GreaterThanBit] <= 0;
+					status[SmallerThanBit] <= 1;
 				end
 			 end
 		end
@@ -192,16 +199,16 @@ Op_XOR: begin
 
 			//auf Equal  prüfen
 			 if(operand1 === operand2) begin
-				status[3] <= 1;
+				status[EqualBit] <= 1;
 				status[5:4] <= 2'b00;	//gleich, daher nicht greater und nicht smaller
 			 end else begin
-				status[3] <= 0;
+				status[EqualBit] <= 0;
 				if(operand1 > operand2) begin //auf greater prüfen
-					status[4] <= 1;
-					status[5] <= 0;
+					status[GreaterThanBit] <= 1;
+					status[SmallerThanBit] <= 0;
 				end else begin	// kleiner
-					status[4] <= 0;
-					status[5] <= 1;
+					status[GreaterThanBit] <= 0;
+					status[SmallerThanBit] <= 1;
 				end
 			 end
 		end
