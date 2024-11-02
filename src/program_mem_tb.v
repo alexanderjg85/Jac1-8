@@ -98,7 +98,7 @@ initial begin
     #4
     program_counter = 19;
 	#6
-    assert(instruction === 16'b0001_0010_0000_1000);
+    assert(instruction === 16'b0001_0010_0001_0000);
     #4
     program_counter = 20;
 	#6
@@ -109,6 +109,26 @@ initial begin
     assert(instruction === 16'b0000_0000_0000_0000);
     #4
     program_counter = 22;
+	#6
+    assert(instruction === 16'b1001_1000_0000_0001);
+    #4
+    program_counter = 23;
+	#6
+    assert(instruction === 16'b0000_0000_0000_0000);
+    #4
+    program_counter = 24;
+	#6
+    assert(instruction === 16'b0000_1001_0001_0000);
+    #4
+    program_counter = 25;
+	#6
+    assert(instruction === 16'b1001_1000_0000_0001);
+    #4
+    program_counter = 26;
+	#6
+    assert(instruction === 16'b0000_0000_0000_0000);
+    #4
+    program_counter = 27;
 	#6
     assert(instruction === 16'b1000_0000_0000_1000);
     #4

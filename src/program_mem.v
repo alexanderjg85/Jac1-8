@@ -40,9 +40,14 @@ begin
 		NVM[19] <= 16'b0001_0010_0001_0000;		//sub   Subtrahiere Register 2 mit 2 und speichere den Wert in Register 2 => Reg2 = h00, Zero Bit = 1
 		NVM[20] <= 16'b1000_1000_0000_0001;		//ifz 	Prüfe das Status Register auf Zero und überspringe den folgenden Befehl, Zero Bit = 1 => Sprung
 		NVM[21] <= 16'b0000_0000_0000_0000;		//nop	wird übersprungen
+		NVM[22] <= 16'b1001_1000_0000_0001;		//ifeq 	Prüfe das Status Register auf Eq und überspringe den folgenden Befehl, Eq Bit = 1 => Sprung
+		NVM[23] <= 16'b0000_0000_0000_0000;		//nop	wird übersprungen
 		//Reg0 = h1F Reg1 = h3C, Reg2 = h00 Reg3 =hEB
-		NVM[22] <= 16'b1000_0000_0000_1000;		//goto Gehe zu Adresse NVM 8
-		for (i=23; i < CMD_CNT; i=i+1)
+		NVM[24] <= 16'b0000_1001_0001_0000;		//add  Addiere Register 1 mit 2 und speichere den Wert in Register 1 => Reg1 = h3C
+		NVM[25] <= 16'b1001_1000_0000_0001;		//ifeq 	Prüfe das Status Register auf Eq und überspringe den folgenden Befehl, Eq Bit = 0 => kein Sprung
+		NVM[26] <= 16'b0000_0000_0000_0000;		//nop	wird ausgefuehrt
+		NVM[27] <= 16'b1000_0000_0000_1000;		//goto Gehe zu Adresse NVM 8
+		for (i=28; i < CMD_CNT; i=i+1)
 		begin
 			NVM[i] <= 0;
 		end
