@@ -28,7 +28,7 @@ parameter Op_SHL  = 5'b0_0111;
 parameter Op_SHR  = 5'b0_1000;
 parameter Op_VAL  = 5'b0_1001;
 //reserved
-parameter OP_RES1 = 5'b0_1010;
+parameter OP_CMPR = 5'b0_1010;	//Compare 2 Registers and set the appropriate status flags
 parameter OP_RES2 = 5'b0_1011;
 parameter OP_RES3 = 5'b0_1100;
 parameter OP_RES4 = 5'b0_1101;
