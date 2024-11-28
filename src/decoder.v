@@ -29,8 +29,8 @@ parameter Op_XOR  = 5'b0_0110;
 parameter Op_SHL  = 5'b0_0111;
 parameter Op_SHR  = 5'b0_1000;
 parameter Op_VAL  = 5'b0_1001;
-//reserved
 parameter OP_CMP  = 5'b0_1010;	//Compare 2 Registers and set the appropriate status flags
+//reserved
 parameter OP_RES2 = 5'b0_1011;
 parameter OP_RES3 = 5'b0_1100;
 parameter OP_RES4 = 5'b0_1101;
@@ -171,6 +171,14 @@ begin
 					rd_en1 <= 0; rd_en2 <= 0; wr_en <= 1; 
 					cnt_wr_en <= 0; sel_reg_in_alu_decoder <= SEL_DECODER;
 					stat_wr_en <= 0;  //Status Register wird durch VAL Cmd nicht verändert
+					add_offset <= 0;
+			end
+	OP_CMP: begin	rd_sel1 <= instruction[OP1_BIT_POS:OP1_BIT_POS-1];
+					rd_sel2 <= instruction[OP2_BIT_POS:OP2_BIT_POS-1];
+					wr_sel <= 2'b00;
+					rd_en1 <= 1; rd_en2 <= 1; wr_en <= 0;
+					cnt_wr_en <= 0; sel_reg_in_alu_decoder <= SEL_DECODER;
+					stat_wr_en <= 1;
 					add_offset <= 0;
 			end
 			
