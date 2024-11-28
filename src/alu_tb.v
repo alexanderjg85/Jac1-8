@@ -23,6 +23,7 @@ parameter Op_XOR = 5'b0_0110;
 parameter Op_SHL = 5'b0_0111;
 parameter Op_SHR = 5'b0_1000;
 parameter Op_VAL = 5'b0_1001;
+parameter Op_CMP = 5'b0_1010;
 
 reg[NumOpCodeBits-1:0] opcode_t;
 reg [DataWidth-1:0] operand1_t;
@@ -308,6 +309,42 @@ initial begin
     assert(status_t[EqualBit] === 0);
     assert(status_t[GreaterThanBit] === 0);
     assert(status_t[SmallerThanBit] === 0);
+    #9
+    opcode_t = Op_CMP;
+    operand1_t = 8'b1111_0110;
+    operand2_t = 8'b0000_0000;
+    param_t = 8'b0000_0000;
+    #1  //1111_0110 > 0 = 0000_0000 und Greater Than-Bit gesetzt
+    assert(result_t === 8'b0000_0000);
+    assert(status_t[1:0] === 2'b00);
+    assert(status_t[ZeroBit] === 0);
+    assert(status_t[EqualBit] === 0);
+    assert(status_t[GreaterThanBit] === 1);
+    assert(status_t[SmallerThanBit] === 0);
+    #9
+    opcode_t = Op_CMP;
+    operand1_t = 8'b1111_0110;
+    operand2_t = 8'b1111_0110;
+    param_t = 8'b0000_0000;
+    #1  //1111_0110 = 1111_0110 -> = 0000_0000 und Equal-Bit gesetzt
+    assert(result_t === 8'b0000_0000);
+    assert(status_t[1:0] === 2'b00);
+    assert(status_t[ZeroBit] === 0);
+    assert(status_t[EqualBit] === 1);
+    assert(status_t[GreaterThanBit] === 0);
+    assert(status_t[SmallerThanBit] === 0);
+    #9
+    opcode_t = Op_CMP;
+    operand1_t = 8'b0111_0110;
+    operand2_t = 8'b1111_0110;
+    param_t = 8'b0000_0000;
+    #1  //0111_0110 < 1111_0110  = 0000_0000 und Smaller Than-Bit gesetzt
+    assert(result_t === 8'b0000_0000);
+    assert(status_t[1:0] === 2'b00);
+    assert(status_t[ZeroBit] === 0);
+    assert(status_t[EqualBit] === 0);
+    assert(status_t[GreaterThanBit] === 0);
+    assert(status_t[SmallerThanBit] === 1);
     #9
     
     $finish();

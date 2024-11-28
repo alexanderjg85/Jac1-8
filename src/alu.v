@@ -27,8 +27,8 @@ parameter Op_XOR  = 5'b0_0110;
 parameter Op_SHL  = 5'b0_0111;
 parameter Op_SHR  = 5'b0_1000;
 parameter Op_VAL  = 5'b0_1001;
+parameter Op_CMP  = 5'b0_1010;	//Compare 2 Registers and set the appropriate status flags
 //reserved
-parameter OP_CMP = 5'b0_1010;	//Compare 2 Registers and set the appropriate status flags
 parameter OP_RES2 = 5'b0_1011;
 parameter OP_RES3 = 5'b0_1100;
 parameter OP_RES4 = 5'b0_1101;
@@ -237,6 +237,24 @@ Op_SHR: begin
 			end
 		end
 //Op_VAL: No AlU Command
+Op_CMP: begin
+			result <= 8'b0000_0000;
+			status[2:0] <= 3'b000; //carry, underflow und zero bit koennen nicht auftreten
+			//auf Equal  prüfen
+			if(operand1 === operand2) begin
+				status[EqualBit] <= 1;
+				status[5:4] <= 2'b00;	//gleich, daher nicht greater und nicht smaller
+			end else begin
+				status[EqualBit] <= 0;
+				if(operand1 > operand2) begin //auf greater prüfen
+					status[GreaterThanBit] <= 1;
+					status[SmallerThanBit] <= 0;
+				end else begin	// kleiner
+					status[GreaterThanBit] <= 0;
+					status[SmallerThanBit] <= 1;
+				end
+			 end
+		end
 
 
 default: begin result <= 8'b0000_0000;  status <= 6'b00_0000; end
