@@ -24,6 +24,8 @@ parameter Op_SHL = 5'b0_0111;
 parameter Op_SHR = 5'b0_1000;
 parameter Op_VAL = 5'b0_1001;
 parameter Op_CMP = 5'b0_1010;
+parameter Op_ADDC = 5'b0_1011;
+parameter Op_SUBU = 5'b0_1100;
 
 reg[NumOpCodeBits-1:0] opcode_t;
 reg [DataWidth-1:0] operand1_t;
