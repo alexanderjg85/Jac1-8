@@ -46,8 +46,10 @@ begin
 		NVM[24] <= 16'b0000_1001_0001_0000;		//add  Addiere Register 1 mit 2 und speichere den Wert in Register 1 => Reg1 = h3C
 		NVM[25] <= 16'b1001_1000_0000_0001;		//ifeq 	Prüfe das Status Register auf Eq und überspringe den folgenden Befehl, Eq Bit = 0 => kein Sprung
 		NVM[26] <= 16'b0000_0000_0000_0000;		//nop	wird ausgefuehrt
-		NVM[27] <= 16'b1000_0000_0000_1000;		//goto Gehe zu Adresse NVM 8
-		for (i=28; i < CMD_CNT; i=i+1)
+		NVM[27] <= 16'b0101_0001_0000_0000;		//cmp   Vergleich Register 1 mit 0 Folgende Flags werden gesetzt: Greater Than Bit
+		NVM[28] <= 16'b0101_0000_0000_1000;		//cmp   Vergleich Register 0 mit 1 Folgende Flags werden gesetzt: Smaller Than Bit
+		NVM[29] <= 16'b1000_0000_0000_1000;		//goto Gehe zu Adresse NVM 8
+		for (i=30; i < CMD_CNT; i=i+1)
 		begin
 			NVM[i] <= 0;
 		end
