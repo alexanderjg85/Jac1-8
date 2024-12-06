@@ -30,6 +30,7 @@ initial begin
     #20
     #30
     #50
+    #20
     sys_res_n = 0;
     #10
     

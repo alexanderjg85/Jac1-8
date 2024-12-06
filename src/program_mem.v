@@ -47,9 +47,12 @@ begin
 		NVM[25] <= 16'b1001_1000_0000_0001;		//ifeq 	Prüfe das Status Register auf Eq und überspringe den folgenden Befehl, Eq Bit = 0 => kein Sprung
 		NVM[26] <= 16'b0000_0000_0000_0000;		//nop	wird ausgefuehrt
 		NVM[27] <= 16'b0101_0001_0000_0000;		//cmp   Vergleich Register 1 mit 0 Folgende Flags werden gesetzt: Greater Than Bit
-		NVM[28] <= 16'b0101_0000_0000_1000;		//cmp   Vergleich Register 0 mit 1 Folgende Flags werden gesetzt: Smaller Than Bit
-		NVM[29] <= 16'b1000_0000_0000_1000;		//goto Gehe zu Adresse NVM 8
-		for (i=30; i < CMD_CNT; i=i+1)
+		NVM[28] <= 16'b1010_0000_0000_0001;		//ifst 	Prüfe das Status Register auf ST und überspringe den folgenden Befehl, ST Bit = 0 => kein Sprung
+		NVM[29] <= 16'b0101_0000_0000_1000;		//cmp   Vergleich Register 0 mit 1 Folgende Flags werden gesetzt: Smaller Than Bit
+		NVM[30] <= 16'b1010_0000_0000_0001;		//ifst 	Prüfe das Status Register auf ST und überspringe den folgenden Befehl, ST Bit = 1 => Sprung
+		NVM[31] <= 16'b0000_0000_0000_0000;		//nop	wird übersprungen
+		NVM[32] <= 16'b1000_0000_0000_1000;		//goto Gehe zu Adresse NVM 8
+		for (i=33; i < CMD_CNT; i=i+1)
 		begin
 			NVM[i] <= 0;
 		end
