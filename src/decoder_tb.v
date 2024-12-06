@@ -95,7 +95,7 @@ initial begin
     #1
     assert(stat_wr_en === 0);
     assert(status_out === 6'b000000);
-    assert(stat_reg_in_alu_decoder === 1);
+    assert(stat_reg_in_alu_decoder === SEL_ALU);
     //Test ADD    
     #9
     instruction[15:11] = Op_ADD;
@@ -107,11 +107,11 @@ initial begin
     assert(rd_sel2 === 2'b10);
     assert(rd_en1 === 1);
     assert(rd_en2 === 1);
-    assert(sel_reg_in_alu_decoder === 1);
+    assert(sel_reg_in_alu_decoder === SEL_ALU);
     assert(wr_en === 1);
     assert(wr_sel === 2'b01);
     assert(status_out === 6'b000000);
-    assert(stat_reg_in_alu_decoder === 1);
+    assert(stat_reg_in_alu_decoder === SEL_ALU);
     assert(stat_wr_en === 1);
     assert(add_offset === 0);
     #9
@@ -125,11 +125,11 @@ initial begin
     assert(rd_sel2 === 2'b01);
     assert(rd_en1 === 1);
     assert(rd_en2 === 1);
-    assert(sel_reg_in_alu_decoder === 1);
+    assert(sel_reg_in_alu_decoder === SEL_ALU);
     assert(wr_en === 1);
     assert(wr_sel === 2'b10);
     assert(status_out === 6'b000000);
-    assert(stat_reg_in_alu_decoder === 1);
+    assert(stat_reg_in_alu_decoder === SEL_ALU);
     assert(stat_wr_en === 1);
     assert(add_offset === 0);
     #9
@@ -143,11 +143,11 @@ initial begin
     assert(rd_sel2 === 2'b10);
     assert(rd_en1 === 1);
     assert(rd_en2 === 1);
-    assert(sel_reg_in_alu_decoder === 1);
+    assert(sel_reg_in_alu_decoder === SEL_ALU);
     assert(wr_en === 1);
     assert(wr_sel === 2'b11);
     assert(status_out === 6'b000000);
-    assert(stat_reg_in_alu_decoder === 1);
+    assert(stat_reg_in_alu_decoder === SEL_ALU);
     assert(stat_wr_en === 1);
     assert(add_offset === 0);
     #9
@@ -161,11 +161,11 @@ initial begin
     assert(rd_sel2 === 2'b01);
     assert(rd_en1 === 1);
     assert(rd_en2 === 1);
-    assert(sel_reg_in_alu_decoder === 1);
+    assert(sel_reg_in_alu_decoder === SEL_ALU);
     assert(wr_en === 1);
     assert(wr_sel === 2'b00);
     assert(status_out === 6'b000000);
-    assert(stat_reg_in_alu_decoder === 1);
+    assert(stat_reg_in_alu_decoder === SEL_ALU);
     assert(stat_wr_en === 1);
     assert(add_offset === 0);
     #9
@@ -179,11 +179,11 @@ initial begin
     assert(rd_sel2 === 2'b00);
     assert(rd_en1 === 0);
     assert(rd_en2 === 1);
-    assert(sel_reg_in_alu_decoder === 1);
+    assert(sel_reg_in_alu_decoder === SEL_ALU);
     assert(wr_en === 1);
     assert(wr_sel === 2'b10);
     assert(status_out === 6'b00_0000);
-    assert(stat_reg_in_alu_decoder === 1);
+    assert(stat_reg_in_alu_decoder === SEL_ALU);
     assert(stat_wr_en === 1);
     assert(add_offset === 0);
     #9
@@ -197,12 +197,12 @@ initial begin
     assert(rd_sel2 === 2'b00);
     assert(rd_en1 === 0);
     assert(rd_en2 === 0);
-    assert(sel_reg_in_alu_decoder === 0);
+    assert(sel_reg_in_alu_decoder === SEL_DECODER);
     assert(wr_en === 1);
     assert(wr_sel === 2'b11);
     assert(param === 8'hA5);
     assert(status_out === 6'b00_0000);
-    assert(stat_reg_in_alu_decoder === 1);
+    assert(stat_reg_in_alu_decoder === SEL_ALU);
     assert(stat_wr_en === 0);
     assert(add_offset === 0);
     #9
@@ -216,13 +216,13 @@ initial begin
     assert(rd_sel2 === 2'b00);
     assert(rd_en1 === 0);
     assert(rd_en2 === 0);
-    assert(sel_reg_in_alu_decoder === 0);
+    assert(sel_reg_in_alu_decoder === SEL_DECODER);
     assert(wr_en === 0);
     assert(wr_sel === 2'b00);
     assert(cnt_wr_en === 1 );
     assert(literal_adr === 8'h3F);
     assert(status_out === 6'b00_0000);
-    assert(stat_reg_in_alu_decoder === 1);
+    assert(stat_reg_in_alu_decoder === SEL_ALU);
     assert(stat_wr_en === 0);
     assert(add_offset === 0);
     #9
@@ -236,11 +236,11 @@ initial begin
     assert(rd_sel2 === 2'b10);
     assert(rd_en1 === 1);
     assert(rd_en2 === 1);
-    assert(sel_reg_in_alu_decoder === 1);
+    assert(sel_reg_in_alu_decoder === SEL_ALU);
     assert(wr_en === 1);
     assert(wr_sel === 2'b11);
     assert(status_out === 6'b00_0000);
-    assert(stat_reg_in_alu_decoder === 1);
+    assert(stat_reg_in_alu_decoder === SEL_ALU);
     assert(stat_wr_en === 1);
     assert(add_offset === 0);
     #9
@@ -254,11 +254,11 @@ initial begin
     assert(rd_sel2 === 2'b00);
     assert(rd_en1 === 1);
     assert(rd_en2 === 0);
-    assert(sel_reg_in_alu_decoder === 1);
+    assert(sel_reg_in_alu_decoder === SEL_ALU);
     assert(wr_en === 1);
     assert(wr_sel === 2'b01);
     assert(status_out === 6'b00_0000);
-    assert(stat_reg_in_alu_decoder === 1);
+    assert(stat_reg_in_alu_decoder === SEL_ALU);
     assert(stat_wr_en === 1);
     assert(add_offset === 0);
     #9
@@ -272,11 +272,11 @@ initial begin
     assert(rd_sel2 === 2'b00);
     assert(rd_en1 === 1);
     assert(rd_en2 === 0);
-    assert(sel_reg_in_alu_decoder === 1);
+    assert(sel_reg_in_alu_decoder === SEL_ALU);
     assert(wr_en === 1);
     assert(wr_sel === 2'b10);
     assert(status_out === 6'b00_0000);
-    assert(stat_reg_in_alu_decoder === 1);
+    assert(stat_reg_in_alu_decoder === SEL_ALU);
     assert(stat_wr_en === 1);
     assert(add_offset === 0);
     #9
@@ -294,7 +294,7 @@ initial begin
     assert(wr_en === 0);
     assert(wr_sel === 2'b00);
     assert(status_out === 6'b00_0000);
-    assert(stat_reg_in_alu_decoder === 1);
+    assert(stat_reg_in_alu_decoder === SEL_ALU);
     assert(stat_wr_en === 0);
     assert(add_offset === 0);
     assert(cnt_wr_en === 0 );
@@ -314,7 +314,7 @@ initial begin
     assert(wr_en === 0);
     assert(wr_sel === 2'b00);
     assert(status_out === 6'b00_0000);
-    assert(stat_reg_in_alu_decoder === 1);
+    assert(stat_reg_in_alu_decoder === SEL_ALU);
     assert(stat_wr_en === 0);
     assert(add_offset === 1);
     assert(cnt_wr_en === 1 );
@@ -333,7 +333,7 @@ initial begin
     assert(wr_en === 0);
     assert(wr_sel === 2'b00);
     assert(status_out === 6'b00_0000);
-    assert(stat_reg_in_alu_decoder === 1);
+    assert(stat_reg_in_alu_decoder === SEL_ALU);
     assert(stat_wr_en === 0);
     assert(add_offset === 0);
     assert(cnt_wr_en === 0 );
@@ -353,7 +353,7 @@ initial begin
     assert(wr_en === 0);
     assert(wr_sel === 2'b00);
     assert(status_out === 6'b00_0000);
-    assert(stat_reg_in_alu_decoder === 1);
+    assert(stat_reg_in_alu_decoder === SEL_ALU);
     assert(stat_wr_en === 0);
     assert(add_offset === 1);
     assert(cnt_wr_en === 1 );
@@ -373,7 +373,7 @@ initial begin
     assert(wr_en === 0);
     assert(wr_sel === 2'b00);
     assert(status_out === 6'b00_0000);
-    assert(stat_reg_in_alu_decoder === 1);
+    assert(stat_reg_in_alu_decoder === SEL_ALU);
     assert(stat_wr_en === 0);
     assert(add_offset === 1);
     assert(cnt_wr_en === 1 );
@@ -393,7 +393,7 @@ initial begin
     assert(wr_en === 0);
     assert(wr_sel === 2'b00);
     assert(status_out === 6'b00_0000);
-    assert(stat_reg_in_alu_decoder === 1);
+    assert(stat_reg_in_alu_decoder === SEL_ALU);
     assert(stat_wr_en === 0);
     assert(add_offset === 0);
     assert(cnt_wr_en === 0 );
@@ -413,7 +413,7 @@ initial begin
     assert(wr_en === 0);
     assert(wr_sel === 2'b00);
     assert(status_out === 6'b00_0000);
-    assert(stat_reg_in_alu_decoder === 1);
+    assert(stat_reg_in_alu_decoder === SEL_ALU);
     assert(stat_wr_en === 0);
     assert(add_offset === 1);
     assert(cnt_wr_en === 1 );
@@ -433,7 +433,7 @@ initial begin
     assert(wr_en === 0);
     assert(wr_sel === 2'b00);
     assert(status_out === 6'b00_0000);
-    assert(stat_reg_in_alu_decoder === 1);
+    assert(stat_reg_in_alu_decoder === SEL_ALU);
     assert(stat_wr_en === 0);
     assert(add_offset === 0);
     assert(cnt_wr_en === 0 );
@@ -457,6 +457,42 @@ initial begin
     assert(add_offset === 0);
     assert(cnt_wr_en === 0 );
     #9
+    //Test ADDC
+    #9
+    instruction[15:11] = Op_ADDC;
+    instruction[OP1_BIT_POS:OP1_BIT_POS-1] = 2'b11;
+    instruction[OP2_BIT_POS:OP2_BIT_POS-1] = 2'b10;
+    #1
+    assert(opcode === Op_ADDC);
+    assert(rd_sel1 === 2'b11);
+    assert(rd_sel2 === 2'b10);
+    assert(rd_en1 === 1);
+    assert(rd_en2 === 1);
+    assert(sel_reg_in_alu_decoder === SEL_ALU);
+    assert(wr_en === 1);
+    assert(wr_sel === 2'b11);
+    assert(status_out === 6'b000000);
+    assert(stat_reg_in_alu_decoder === SEL_ALU);
+    assert(stat_wr_en === 1);
+    assert(add_offset === 0);
+    #9
+    //Test Op_SUBU
+    instruction[15:11] = Op_SUBU;
+    instruction[OP1_BIT_POS:OP1_BIT_POS-1] = 2'b01;
+    instruction[OP2_BIT_POS:OP2_BIT_POS-1] = 2'b10;
+    #1
+    assert(opcode === Op_SUBU);
+    assert(rd_sel1 === 2'b01);
+    assert(rd_sel2 === 2'b10);
+    assert(rd_en1 === 1);
+    assert(rd_en2 === 1);
+    assert(sel_reg_in_alu_decoder === SEL_ALU);
+    assert(wr_en === 1);
+    assert(wr_sel === 2'b01);
+    assert(status_out === 6'b000000);
+    assert(stat_reg_in_alu_decoder === SEL_ALU);
+    assert(stat_wr_en === 1);
+    assert(add_offset === 0);
 
 	$finish();
 end

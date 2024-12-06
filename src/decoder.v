@@ -107,7 +107,23 @@ begin
 					stat_wr_en <= 1;
 					add_offset <= 0;
 			end
+	Op_ADDC: begin  rd_sel1 <= instruction[OP1_BIT_POS:OP1_BIT_POS-1];
+					rd_sel2 <= instruction[OP2_BIT_POS:OP2_BIT_POS-1];
+					wr_sel <= instruction[OP1_BIT_POS:OP1_BIT_POS-1];
+					rd_en1 <= 1; rd_en2 <= 1; wr_en <= 1; cnt_wr_en <= 0;
+					sel_reg_in_alu_decoder <= SEL_ALU;
+					stat_wr_en <= 1;
+					add_offset <= 0;
+			end
 	Op_SUB: begin	rd_sel1 <= instruction[OP1_BIT_POS:OP1_BIT_POS-1];
+					rd_sel2 <= instruction[OP2_BIT_POS:OP2_BIT_POS-1];
+					wr_sel <= instruction[OP1_BIT_POS:OP1_BIT_POS-1];
+					rd_en1 <= 1; rd_en2 <= 1; wr_en <= 1; cnt_wr_en <= 0;
+					sel_reg_in_alu_decoder <= SEL_ALU;
+					stat_wr_en <= 1;
+					add_offset <= 0;
+			end
+	Op_SUBU: begin	rd_sel1 <= instruction[OP1_BIT_POS:OP1_BIT_POS-1];
 					rd_sel2 <= instruction[OP2_BIT_POS:OP2_BIT_POS-1];
 					wr_sel <= instruction[OP1_BIT_POS:OP1_BIT_POS-1];
 					rd_en1 <= 1; rd_en2 <= 1; wr_en <= 1; cnt_wr_en <= 0;
