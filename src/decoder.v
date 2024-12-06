@@ -271,7 +271,22 @@ begin
 					stat_wr_en <= 0;	//Status Register wird durch IFST nicht verändert
 					sel_reg_in_alu_decoder <= SEL_DECODER;
 			end
-	//Todo	Op_IFGT begin end
+	Op_IFGT: begin  if(status[GreaterThanBit] === 1) //Greater Than Bit gesetzt, relative Adresse wird gesetzt
+					begin
+						cnt_wr_en <= 1;
+						add_offset <= 1;
+					end else begin //Greater Than Bit nicht gesetzt, do nothing increment pc normally by 1
+						cnt_wr_en <= 0;
+						add_offset <= 0;
+					end
+
+					rd_sel1 <= 2'b00;
+					rd_sel2 <= 2'b00;
+					wr_sel <= 2'b00;
+					rd_en1 <= 0; rd_en2 <= 0; wr_en <= 0;
+					stat_wr_en <= 0;	//Status Register wird durch IFST nicht verändert
+					sel_reg_in_alu_decoder <= SEL_DECODER;
+			end
 	
 	default: begin  rd_sel1 <= 2'b00; rd_sel2 <= 2'b00; wr_sel <= 2'b00;
 					rd_en1 <= 0; rd_en2 <= 0; wr_en <= 0; cnt_wr_en <= 0;
